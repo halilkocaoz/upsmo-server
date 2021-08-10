@@ -9,7 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\UpMo.Common\UpMo.Common.csproj" />
+    <ProjectReference Include="..\UpMo.Services\UpMo.Services.csproj" />
   </ItemGroup>
 
 </Project>

@@ -4,4 +4,9 @@
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\UpMo.Common\UpMo.Common.csproj" />
+    <ProjectReference Include="..\UpMo.Data\UpMo.Data.csproj" />
+  </ItemGroup>
+
 </Project>
