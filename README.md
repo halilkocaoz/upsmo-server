@@ -1,1 +1,1 @@
-# uptime-monitoring
+# uptime-monitoring-server
