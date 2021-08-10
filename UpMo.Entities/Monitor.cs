@@ -10,9 +10,11 @@ namespace UpMo.Entities
         public string Name { get; set; }
 
         /// <summary>
-        /// URL or IP Address
+        /// Domain or IP Address
         /// </summary>
-        public string URL { get; set; }
+        public string Host { get; set; }
+        public string Port { get; set; }
+
         
         public MonitorMethodType Method { get; set; }
         

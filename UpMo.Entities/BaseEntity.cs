@@ -9,6 +9,7 @@ namespace UpMo.Entities
             CreatedAt = DateTime.Now;
         }
 
+        // Uppercase because of Golang lint :)
         public T ID { get; set; }
 
         public DateTime CreatedAt { get; private set; }
