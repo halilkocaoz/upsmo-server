@@ -24,6 +24,6 @@ namespace UpMo.Entities
         /// <summary>
         /// POST form body values
         /// </summary>
-        public virtual ICollection<MonitorBody> BodyValues { get; set; }
+        public virtual ICollection<MonitorPostBody> PostBodyValues { get; set; }
     }
 }
