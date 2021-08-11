@@ -6,6 +6,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using UpMo.Data;
+using UpMo.Services.Abstract;
+using UpMo.Services.Concrete;
 
 namespace UpMo.WebAPI
 {
@@ -25,6 +27,9 @@ namespace UpMo.WebAPI
             {
                 options.UseNpgsql(Configuration.GetConnectionString("Postgres-UpMo-Application"));
             });
+
+            services.AddScoped<IOrganizationService, OrganizationService>();
+            services.AddAutoMapper(typeof(AutoMapperProfile));
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
@@ -48,7 +53,7 @@ namespace UpMo.WebAPI
             app.UseRouting();
 
             app.UseAuthorization();
-
+            //todo error handling mw
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

@@ -5,6 +5,12 @@ namespace UpMo.Entities
 {
     public class Organization : BaseEntity<Guid>
     {
+        public Organization()
+        {
+            Monitors = new HashSet<Monitor>();
+            Managers = new HashSet<OrganizationManager>();
+        }
+        
         public string Name { get; set; }
         public uint CreatorUserID { get; set; }
         

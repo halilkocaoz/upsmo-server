@@ -6,6 +6,11 @@ namespace UpMo.Entities
 {
     public class Monitor : BaseEntity<Guid>
     {
+        public Monitor()
+        {
+            PostBodyValues = new HashSet<MonitorPostBody>();
+        }
+        
         public Guid OrganizationID { get; set; }
         public string Name { get; set; }
 
@@ -13,8 +18,6 @@ namespace UpMo.Entities
         /// Domain or IP Address
         /// </summary>
         public string Host { get; set; }
-        public string Port { get; set; }
-
         
         public MonitorMethodType Method { get; set; }
         

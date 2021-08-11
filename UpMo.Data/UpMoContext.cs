@@ -17,6 +17,7 @@ namespace UpMo.Data
         {
             modelBuilder.Entity<AppUser>(entity =>
             {
+                entity.Property(props => props.Id).ValueGeneratedOnAdd();
             });
 
             modelBuilder.Entity<Organization>(entity =>
