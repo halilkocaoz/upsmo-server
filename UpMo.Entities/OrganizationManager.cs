@@ -6,11 +6,7 @@ namespace UpMo.Entities
     {
         public Guid OrganizationID { get; set; }
         public int UserID { get; set; }
-
-        // todo: user what may do about Organization, for example create, update, delete monitor
-
-        //public virtual Organization Organization { get; set; }
-        
-        //public virtual AppUser User { get; set; }
+        public bool Admin { get; set; }
+        public bool Viewer { get; set; }
     }
 }

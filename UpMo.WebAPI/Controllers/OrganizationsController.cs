@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -12,16 +13,20 @@ namespace UpMo.WebAPI.Controllers
     public class OrganizationsController : BaseController
     {
         private readonly IOrganizationService _organizationService;
-        public OrganizationsController(IOrganizationService organizationService)
-        {
-            _organizationService = organizationService;
-        }
+        public OrganizationsController(IOrganizationService organizationService) => _organizationService = organizationService;
 
         [HttpPost]
         public async Task<IActionResult> CreateAsync(OrganizationCreateRequest request)
         {
             request.CreatorUserID = User.GetId();
             return ApiResponse(await _organizationService.CreateAsync(request));
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateAsync([FromRoute] Guid id, [FromBody] OrganizationUpdateRequest request)
+        {
+            request.AuthenticatedUserID = User.GetId();
+            return ApiResponse(await _organizationService.UpdateAsyncByID(toBeUpdatedOrganizationID: id, request));
         }
     }
 }
