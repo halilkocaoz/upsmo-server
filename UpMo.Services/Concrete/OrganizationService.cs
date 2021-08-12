@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -86,5 +87,17 @@ namespace UpMo.Services.Concrete
             return new ApiResponse(ResponseStatus.Forbid, ResponseMessage.Forbid);
         }
 
+        public async Task<ApiResponse> GetOrganizationsByAuthenticatedUserIDAsync(int authenticatedUserID)
+        {
+            var organizationsForAuthenticatedUser = await _context.Organizations
+                                                    .Include(x => x.Managers)
+                                                    .Include(x => x.Monitors)
+                                                    .AsSplitQuery()
+                                                    .Where(x => x.CreatorUserID == authenticatedUserID || x.Managers.Any(x => x.Viewer && x.UserID == authenticatedUserID))
+                                                    .ToListAsync();
+
+            object returnObject = new { organizations = _mapper.Map<List<OrganizationResponse>>(organizationsForAuthenticatedUser) };
+            return new ApiResponse(ResponseStatus.OK, returnObject);
+        }
     }
 }

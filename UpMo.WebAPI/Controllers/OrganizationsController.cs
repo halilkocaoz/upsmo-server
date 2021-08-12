@@ -15,6 +15,12 @@ namespace UpMo.WebAPI.Controllers
         private readonly IOrganizationService _organizationService;
         public OrganizationsController(IOrganizationService organizationService) => _organizationService = organizationService;
 
+        [HttpGet]
+        public async Task<IActionResult> GetOrganizationsForAuthenticatedUser()
+        {
+            return ApiResponse(await _organizationService.GetOrganizationsByAuthenticatedUserIDAsync(User.GetId()));
+        }
+
         [HttpPost]
         public async Task<IActionResult> CreateAsync(OrganizationCreateRequest request)
         {
