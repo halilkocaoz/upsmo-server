@@ -6,8 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using UpMo.Data;
-using UpMo.Services.Abstract;
-using UpMo.Services.Concrete;
+using UpMo.WebAPI.Extensions;
 
 namespace UpMo.WebAPI
 {
@@ -23,19 +22,16 @@ namespace UpMo.WebAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddControllers();
             services.AddDbContext<UpMoContext>(options =>
             {
                 options.UseNpgsql(Configuration.GetConnectionString("Postgres-UpMo-Application"));
             });
+            
+            services.AddCustomServices();
+            services.AddSwaggerWithSecurityScheme();
+            services.AddAuthWithIdentity(Configuration);
 
-            services.AddScoped<IOrganizationService, OrganizationService>();
-            services.AddAutoMapper(typeof(AutoMapperProfile));
-
-            services.AddControllers();
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "UpMo.WebAPI", Version = "v1" });
-            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -53,6 +49,8 @@ namespace UpMo.WebAPI
             app.UseRouting();
 
             app.UseAuthorization();
+            app.UseAuthentication();
+
             //todo error handling mw
             app.UseEndpoints(endpoints =>
             {
