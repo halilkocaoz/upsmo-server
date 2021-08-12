@@ -2,6 +2,11 @@ namespace UpMo.Common.Response
 {
     public enum ResponseStatus : int
     {
-        Created = 201
+        OK = 200,
+        Created = 201,
+
+        BadRequest = 400,
+
+        NotFound = 404
     }
 }

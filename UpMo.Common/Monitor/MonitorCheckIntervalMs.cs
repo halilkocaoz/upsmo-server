@@ -3,7 +3,7 @@ namespace UpMo.Common.Monitor
     /// <summary>
     /// Check interval as miliseconds
     /// </summary>
-    public enum MonitorCheckIntervalMs : uint
+    public enum MonitorCheckIntervalMs : int
     {
         OneMin = 60000,
         FiveMins = OneMin * 5,

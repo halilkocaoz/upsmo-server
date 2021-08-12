@@ -9,6 +9,6 @@ namespace UpMo.Common.DTO.Request
         public Guid ID { get; private set; } = Guid.NewGuid();
         public string Name { get; set; }
         [JsonIgnore]
-        public uint CreatorUserID { get; set; }
+        public int CreatorUserID { get; set; }
     }
 }
