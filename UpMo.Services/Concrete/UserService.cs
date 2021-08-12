@@ -39,7 +39,7 @@ namespace UpMo.Services.Concrete
                 }
             }
 
-            return new ApiResponse(ResponseStatus.BadRequest, "Invalid credentials");
+            return new ApiResponse(ResponseStatus.BadRequest, ResponseMessage.InvalidCredentials);
         }
 
         public async Task<ApiResponse> SignUpWithPasswordAsync(SignUpRequest request)

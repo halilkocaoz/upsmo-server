@@ -30,7 +30,7 @@ namespace UpMo.WebAPI.Middlewares
                 response.ContentType = "application/json";
                 response.StatusCode = 500;
 
-                var responseBody = JsonSerializer.Serialize(new ApiResponse(ResponseStatus.Internal, "Internal server error"));
+                var responseBody = JsonSerializer.Serialize(new ApiResponse(ResponseStatus.Internal, ResponseMessage.Internal));
 
                 _logger.LogError(error, responseBody);
 
