@@ -15,6 +15,11 @@ namespace UpMo.Common.Response
 
         #region Not Found
         public static readonly string NotFoundOrganization = $"{notFoundStarting} Organization";
+        public static readonly string NotFoundUser = $"{notFoundStarting} User";
+        #endregion
+
+        #region Bad Request
+        public static readonly string AlreadyManager = "Given user is already manager at the given organization.";
         #endregion
     }
 }

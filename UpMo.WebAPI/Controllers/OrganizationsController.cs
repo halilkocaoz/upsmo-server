@@ -34,5 +34,14 @@ namespace UpMo.WebAPI.Controllers
             request.AuthenticatedUserID = User.GetId();
             return ApiResponse(await _organizationService.UpdateAsyncByID(toBeUpdatedOrganizationID: id, request));
         }
+
+
+        [HttpPost("Managers/{id}")]
+        public async Task<IActionResult> CreateManagerForOrganizationAsync([FromRoute] Guid id, [FromBody] OrganizationManagerCreateRequest request)
+        {
+            request.OrganizationID = id;
+            request.AuthenticatedUserID = User.GetId();
+            return ApiResponse(await _organizationService.CreateManagerForOrganization(request));
+        }
     }
 }
