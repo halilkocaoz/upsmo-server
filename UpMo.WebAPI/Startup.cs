@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.OpenApi.Models;
 using UpMo.Data;
 using UpMo.WebAPI.Extensions;
+using UpMo.WebAPI.Middlewares;
 
 namespace UpMo.WebAPI
 {
@@ -31,7 +31,6 @@ namespace UpMo.WebAPI
             services.AddCustomServices();
             services.AddSwaggerWithSecurityScheme();
             services.AddAuthWithIdentity(Configuration);
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -51,7 +50,7 @@ namespace UpMo.WebAPI
             app.UseAuthorization();
             app.UseAuthentication();
 
-            //todo error handling mw
+            app.UseMiddleware<ErrorHandlingMiddleware>();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

@@ -8,7 +8,7 @@ namespace UpMo.Common.Response
             StatusCode = (int)responseStatus;
             Succes = StatusCode < 400;
 
-            Message = Succes ? "Succes" : "Failed";
+            Message = Succes ? "successful" : "failed";
         }
 
         public ApiResponse(ResponseStatus responseStatus, string message)
@@ -26,7 +26,7 @@ namespace UpMo.Common.Response
             StatusCode = (int)responseStatus;
             Succes = StatusCode < 400;
 
-            Message = Succes ? "Succes" : "Failed";
+            Message = Succes ? "successful" : "failed";
         }
 
         public ApiResponse(ResponseStatus responseStatus, object data, string message)

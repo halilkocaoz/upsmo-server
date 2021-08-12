@@ -11,13 +11,25 @@ namespace UpMo.Services.Abstract
         /// </summary>
         /// <param name="request"></param>
         /// <returns><see cref="ApiResponse"/> with status code 200 and bearer token or status code 400</returns>
-        Task<ApiResponse> SignIn(SignInRequest request);
+        Task<ApiResponse> SignInWithPasswordAsync(SignInRequest request);
 
         /// <summary>
         /// SignUp with Email, UserName and Password
         /// </summary>
         /// <param name="request"></param>
         /// <returns><see cref="ApiResponse"/> with status code 200 and bearer token or status code 400 and errors</returns>
-        Task<ApiResponse> SignUp(SignUpRequest request);
+        Task<ApiResponse> SignUpWithPasswordAsync(SignUpRequest request);
+
+        /// <summary>
+        /// SigIn with Social Providers
+        /// </summary>
+        /// <returns><see cref="ApiResponse"/> with status code 200 and bearer token or status code 400</returns>
+        Task<ApiResponse> SignInWithSocialAsync();
+
+        /// <summary>
+        /// SigUp with Social Providers
+        /// </summary>
+        /// <returns><see cref="ApiResponse"/> with status code 200 and bearer token or status code 400 and errors</returns>
+        Task<ApiResponse> SignUpWithSocialAsync();
     }
 }

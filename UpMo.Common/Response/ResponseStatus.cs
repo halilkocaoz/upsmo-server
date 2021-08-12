@@ -6,7 +6,9 @@ namespace UpMo.Common.Response
         Created = 201,
 
         BadRequest = 400,
+        Forbid = 403,
+        NotFound = 404,
 
-        NotFound = 404
+        Internal = 500
     }
 }

@@ -25,7 +25,7 @@ namespace UpMo.Services.Concrete
             _tokenService = tokenService;
         }
 
-        public async Task<ApiResponse> SignIn(SignInRequest request)
+        public async Task<ApiResponse> SignInWithPasswordAsync(SignInRequest request)
         {
             bool isIdentifierEmail = request.Identifier.Contains("@");
             var user = isIdentifierEmail ? await _userManager.FindByEmailAsync(request.Identifier) : await _userManager.FindByNameAsync(request.Identifier);
@@ -42,7 +42,7 @@ namespace UpMo.Services.Concrete
             return new ApiResponse(ResponseStatus.BadRequest, "Invalid credentials");
         }
 
-        public async Task<ApiResponse> SignUp(SignUpRequest request)
+        public async Task<ApiResponse> SignUpWithPasswordAsync(SignUpRequest request)
         {
             var newUser = _mapper.Map<AppUser>(request);
             var identityResult = await _userManager.CreateAsync(newUser, request.Password);
@@ -52,6 +52,16 @@ namespace UpMo.Services.Concrete
             }
 
             return new ApiResponse(ResponseStatus.BadRequest, new { errors = identityResult.Errors });
+        }
+
+        public Task<ApiResponse> SignInWithSocialAsync()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public Task<ApiResponse> SignUpWithSocialAsync()
+        {
+            throw new System.NotImplementedException();
         }
     }
 }
