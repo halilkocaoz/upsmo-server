@@ -10,6 +10,7 @@ namespace UpMo.WebAPI
         public AutoMapperProfile()
         {
             #region DTO > Entity
+            CreateMap<SignUpRequest, AppUser>();
             CreateMap<OrganizationCreateRequest, Organization>();
             #endregion
             
