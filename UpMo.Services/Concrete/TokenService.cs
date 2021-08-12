@@ -21,13 +21,13 @@ namespace UpMo.Services.Concrete
             {
                 new Claim(JwtRegisteredClaimNames.Iss, "UpMo"),
                 new Claim(JwtRegisteredClaimNames.Aud, "https://domain.com"),
-                new Claim("USERID", user.Id.ToString()),
+                new Claim("UserId", user.Id.ToString()),
             };
             
             var signCredentials = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512Signature);
 
             var token = new JwtSecurityToken(
-                expires: DateTime.Now.AddMinutes(1),
+                expires: DateTime.Now.AddDays(1),
                 signingCredentials: signCredentials,
                 claims: claims
             );

@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.Extensions.Logging;
 using UpMo.Common.DTO.Request;
 using UpMo.Common.DTO.Response;
 using UpMo.Common.Response;
@@ -9,15 +10,12 @@ using UpMo.Services.Abstract;
 
 namespace UpMo.Services.Concrete
 {
-    public class OrganizationService : IOrganizationService
+    public class OrganizationService : BaseService, IOrganizationService
     {
-        private readonly UpMoContext _context;
-        private readonly IMapper _mapper;
-
-        public OrganizationService(UpMoContext context, IMapper mapper)
+        public OrganizationService(IMapper mapper,
+                                   UpMoContext context,
+                                   ILogger<OrganizationService> logger) : base(mapper, context, logger)
         {
-            _context = context;
-            _mapper = mapper;
         }
 
         public async Task<ApiResponse> CreateAsync(OrganizationCreateRequest request)

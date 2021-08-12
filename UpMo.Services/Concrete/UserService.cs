@@ -1,24 +1,26 @@
-using System;
-using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
 using UpMo.Common.DTO.Request;
 using UpMo.Common.Response;
+using UpMo.Data;
 using UpMo.Entities;
 using UpMo.Services.Abstract;
 
 namespace UpMo.Services.Concrete
 {
-    public class UserService : IUserService
+    public class UserService : BaseService, IUserService
     {
-        private readonly IMapper _mapper;
         private readonly UserManager<AppUser> _userManager;
         private readonly ITokenService _tokenService;
 
-        public UserService(IMapper mapper, ITokenService tokenService, UserManager<AppUser> userManager)
+        public UserService(IMapper mapper,
+                           UpMoContext context,
+                           ILogger<UserService> logger,
+                           UserManager<AppUser> userManager,
+                           ITokenService tokenService) : base(mapper, context, logger)
         {
-            _mapper = mapper;
             _userManager = userManager;
             _tokenService = tokenService;
         }
