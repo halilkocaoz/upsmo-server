@@ -13,13 +13,9 @@ namespace UpMo.WebAPI.Controllers
     public class OrganizationsController : BaseController
     {
         private readonly IOrganizationService _organizationService;
-        private readonly IOrganizationManagerService _managerOrganizationService;
 
-        public OrganizationsController(IOrganizationService organizationService, IOrganizationManagerService managerOrganizationService)
-        {
+        public OrganizationsController(IOrganizationService organizationService) => 
             _organizationService = organizationService;
-            _managerOrganizationService = managerOrganizationService;
-        }
 
         [HttpGet]
         public async Task<IActionResult> GetOrganizationsForAuthenticatedUserAsync() =>
@@ -38,26 +34,6 @@ namespace UpMo.WebAPI.Controllers
             request.OrganizationID = organizationID;
             request.AuthenticatedUserID = User.GetID();
             return ApiResponse(await _organizationService.UpdateByRequestAsync(request));
-        }
-
-        [HttpGet("{organizationID}/Managers")]
-        public async Task<IActionResult> GetManagersByOrganizationIDForAuthenticatedUserAsync([FromRoute] Guid organizationID) => 
-            ApiResponse(await _managerOrganizationService.GetManagersByOrganizationIDAndAuthenticatedUserID(organizationID, User.GetID()));
-
-        [HttpPost("{organizationID}/Managers")]
-        public async Task<IActionResult> CreateManagerAsync([FromRoute] Guid organizationID, [FromBody] OrganizationManagerCreateRequest request)
-        {
-            request.OrganizationID = organizationID;
-            request.AuthenticatedUserID = User.GetID();
-            return ApiResponse(await _managerOrganizationService.CreateByRequestAsync(request));
-        }
-
-        [HttpPut("{organizationID}/Managers/{organizationManagerID}")]
-        public async Task<IActionResult> UpdateManagerAsync([FromRoute] Guid organizationID, [FromRoute] Guid organizationManagerID, [FromBody] OrganizationManagerUpdateRequest request)
-        {
-            request.OrganizationManagerID = organizationManagerID;
-            request.AuthenticatedUserID = User.GetID();
-            return ApiResponse(await _managerOrganizationService.UpdateByRequestAsync(request));
         }
     }
 }
