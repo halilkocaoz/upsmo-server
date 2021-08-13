@@ -3,14 +3,14 @@ using System.Text.Json.Serialization;
 
 namespace UpMo.Common.DTO.Request
 {
-    public class OrganizationUpdateRequest
+    public class OrganizationManagerUpdateRequest
     {
         [JsonIgnore]
-        public Guid OrganizationID { get; set; }
-
+        public Guid OrganizationManagerID { get; set; }
         [JsonIgnore]
         public int AuthenticatedUserID { get; set; }
-        
-        public string Name { get; set; }
+
+        public bool Admin { get; set; }
+        public bool Viewer { get; set; }
     }
 }

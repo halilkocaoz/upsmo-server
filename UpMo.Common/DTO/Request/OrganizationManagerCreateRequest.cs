@@ -10,7 +10,9 @@ namespace UpMo.Common.DTO.Request
 
         [JsonIgnore]
         public Guid OrganizationID { get; set; }
-
+        
+        [JsonIgnore]
+        public int AuthenticatedUserID { get; set; }
 
         /// <summary>
         /// will be manager user email or username
@@ -18,8 +20,5 @@ namespace UpMo.Common.DTO.Request
         public string Identifier { get; set; }
         public bool Admin { get; set; }
         public bool Viewer { get; set; }
-
-        [JsonIgnore]
-        public int AuthenticatedUserID { get; set; }
     }
 }

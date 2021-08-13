@@ -12,15 +12,16 @@ namespace UpMo.Services.Abstract
         /// </summary>
         /// <param name="request"></param>
         /// <returns><see cref="ApiResponse"/> with <see cref="ResponseStatus.Created"/> and created organization object.</returns>
-        Task<ApiResponse> CreateAsync(OrganizationCreateRequest request);
+        Task<ApiResponse> CreateByRequestAsync(OrganizationCreateRequest request);
 
         /// <summary>
         /// Updates organization by ID, if <see cref="OrganizationUpdateRequest.AuthenticatedUserID"/> equals any admin or creator user id for the Organization.
+        /// <para>Authenticated user must be creator or admin of the Organization</para>
         /// </summary>
         /// <param name="toBeUpdatedOrganizationID"></param>
         /// <param name="request"></param>
         /// <returns><see cref="ApiResponse"/> with <see cref="ResponseStatus.OK"/> and updated organization object or <see cref="ResponseStatus.Forbid"/>.</returns>
-        Task<ApiResponse> UpdateAsyncByID(Guid toBeUpdatedOrganizationID, OrganizationUpdateRequest request);
+        Task<ApiResponse> UpdateByRequestAsync(OrganizationUpdateRequest request);
 
         /// <summary>
         /// Gets organizations for authenticated user by id of user.

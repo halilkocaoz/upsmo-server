@@ -21,11 +21,11 @@ namespace UpMo.Services.Concrete
         {
         }
 
-        public async Task<ApiResponse> CreateAsync(OrganizationCreateRequest request)
+        public async Task<ApiResponse> CreateByRequestAsync(OrganizationCreateRequest request)
         {
             var organization = _mapper.Map<Organization>(request);
 
-            var organizationManager = new OrganizationManager // todo mapper
+            var organizationManager = new OrganizationManager
             {
                 ID = System.Guid.NewGuid(),
                 OrganizationID = organization.ID,
@@ -46,9 +46,10 @@ namespace UpMo.Services.Concrete
             return new ApiResponse(ResponseStatus.Created, _mapper.Map<OrganizationResponse>(organization));
         }
 
-        public async Task<ApiResponse> UpdateAsyncByID(Guid toBeUpdatedOrganizationID, OrganizationUpdateRequest request)
+        public async Task<ApiResponse> UpdateByRequestAsync(OrganizationUpdateRequest request)
         {
-            var toBeUpdatedOrganization = await _context.Organizations.Include(x => x.Managers).SingleOrDefaultAsync(x => x.ID == toBeUpdatedOrganizationID);
+            var toBeUpdatedOrganization = await _context.Organizations.Include(x => x.Managers)
+                                                                      .SingleOrDefaultAsync(x => x.ID == request.OrganizationID);
             if (toBeUpdatedOrganization is null)
             {
                 return new ApiResponse(ResponseStatus.NotFound, ResponseMessage.NotFoundOrganization);

@@ -17,7 +17,7 @@ namespace UpMo.Services.Concrete
         {
         }
 
-        public async Task<ApiResponse> CreateAsync(OrganizationManagerCreateRequest request)
+        public async Task<ApiResponse> CreateByRequestAsync(OrganizationManagerCreateRequest request)
         {
             var toBeCreatedAManagerOrganization = await _context.Organizations.SingleOrDefaultAsync(x => x.ID == request.OrganizationID);
 
@@ -35,10 +35,10 @@ namespace UpMo.Services.Concrete
                     return new ApiResponse(ResponseStatus.NotFound, ResponseMessage.NotFoundUser);
                 }
 
-                bool givenUserAlreadyManagerAtGivenOrganization = await _context.OrganizationManagers
+                bool userAlreadyManagerAtGivenOrganization = await _context.OrganizationManagers
                      .AnyAsync(x => x.UserID == willBeManagerUser.Id && x.OrganizationID == toBeCreatedAManagerOrganization.ID);
 
-                if (givenUserAlreadyManagerAtGivenOrganization) // todo: take precautions too on database side
+                if (userAlreadyManagerAtGivenOrganization) // todo: take precautions too on database side
                 {
                     return new ApiResponse(ResponseStatus.BadRequest, ResponseMessage.AlreadyManager);
                 }
@@ -52,6 +52,27 @@ namespace UpMo.Services.Concrete
             }
 
             return new ApiResponse(ResponseStatus.Forbid, ResponseMessage.Forbid);
+        }
+
+        public async Task<ApiResponse> UpdateByRequestAsync(OrganizationManagerUpdateRequest request)
+        {
+            var toBeUpdatedManager = await _context.OrganizationManagers.Include(x => x.Organization)
+                                                                                    .SingleOrDefaultAsync(x => x.ID == request.OrganizationManagerID);
+
+            if (toBeUpdatedManager is null)
+            {
+                return new ApiResponse(ResponseStatus.NotFound, ResponseMessage.NotFoundOrganization);
+            }
+
+            if (toBeUpdatedManager.Organization.CheckCreator(request.AuthenticatedUserID))
+            {
+                toBeUpdatedManager.Admin = request.Admin;
+                toBeUpdatedManager.Viewer = request.Viewer;
+                await _context.SaveChangesAsync();
+                return new ApiResponse(ResponseStatus.OK);
+            }
+
+            return new ApiResponse(ResponseStatus.Forbid, ResponseMessage.Forbid);;
         }
     }
 }

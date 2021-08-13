@@ -23,7 +23,7 @@ namespace UpMo.Data.Extensions
         /// <param name="org">Instance</param>
         /// <param name="authenticatedUserID">An value to compare <see cref="Organization.CreatorUserID"/></param>
         /// <returns>true if given value has the same value as given <see cref="Organization.CreatorUserID"/> or same <see cref="OrganizationManager.UserID"/> as Admin; otherwise, false</returns>
-        /// <exception cref="NullReferenceException"><see cref="Organization.Managers"/></exception>
+        /// <exception cref="ArgumentNullException"><see cref="Organization.Managers"/></exception>
         public static bool CheckCreatorOrAdmin(this Organization org, int authenticatedUserID)
         {
             if (org?.CreatorUserID == authenticatedUserID)
@@ -32,7 +32,7 @@ namespace UpMo.Data.Extensions
             }
             if (org?.Managers is null)
             {
-                throw new NullReferenceException(nameof(org.Managers));
+                throw new ArgumentNullException(nameof(org.Managers));
             }
 
             return org.Managers.Any(x => x.Admin && x.UserID == authenticatedUserID);

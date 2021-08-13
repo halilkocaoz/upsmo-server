@@ -22,32 +22,41 @@ namespace UpMo.WebAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetOrganizationsForAuthenticatedUser()
-        {
-            return ApiResponse(await _organizationService.GetOrganizationsByAuthenticatedUserIDAsync(User.GetId()));
-        }
+        public async Task<IActionResult> GetOrganizationsForAuthenticatedUserAsync() =>
+            ApiResponse(await _organizationService.GetOrganizationsByAuthenticatedUserIDAsync(User.GetID()));
 
         [HttpPost]
         public async Task<IActionResult> CreateAsync(OrganizationCreateRequest request)
         {
-            request.CreatorUserID = User.GetId();
-            return ApiResponse(await _organizationService.CreateAsync(request));
+            request.CreatorUserID = User.GetID();
+            return ApiResponse(await _organizationService.CreateByRequestAsync(request));
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateAsync([FromRoute] Guid id, [FromBody] OrganizationUpdateRequest request)
+        [HttpPut("{organizationID}")]
+        public async Task<IActionResult> UpdateAsync([FromRoute] Guid organizationID, [FromBody] OrganizationUpdateRequest request)
         {
-            request.AuthenticatedUserID = User.GetId();
-            return ApiResponse(await _organizationService.UpdateAsyncByID(toBeUpdatedOrganizationID: id, request));
+            request.OrganizationID = organizationID;
+            request.AuthenticatedUserID = User.GetID();
+            return ApiResponse(await _organizationService.UpdateByRequestAsync(request));
         }
 
+        [HttpGet("{organizationID}/Managers")]
+        public async Task<IActionResult> GetOrganizationManagersByOrganizationIDForAuthenticatedUserAsync([FromRoute] Guid organizationID) => throw new NotImplementedException();
 
-        [HttpPost("{id}/Managers")]
-        public async Task<IActionResult> CreateManagerForOrganizationAsync([FromRoute] Guid id, [FromBody] OrganizationManagerCreateRequest request)
+        [HttpPost("{organizationID}/Managers")]
+        public async Task<IActionResult> CreateManagerAsync([FromRoute] Guid organizationID, [FromBody] OrganizationManagerCreateRequest request)
         {
-            request.OrganizationID = id;
-            request.AuthenticatedUserID = User.GetId();
-            return ApiResponse(await _managerOrganizationService.CreateAsync(request));
+            request.OrganizationID = organizationID;
+            request.AuthenticatedUserID = User.GetID();
+            return ApiResponse(await _managerOrganizationService.CreateByRequestAsync(request));
+        }
+
+        [HttpPut("{organizationID}/Managers/{organizationManagerID}")]
+        public async Task<IActionResult> UpdateManagerAsync([FromRoute] Guid organizationID, [FromRoute] Guid organizationManagerID, [FromBody] OrganizationManagerUpdateRequest request)
+        {
+            request.OrganizationManagerID = organizationManagerID;
+            request.AuthenticatedUserID = User.GetID();
+            return ApiResponse(await _managerOrganizationService.UpdateByRequestAsync(request));
         }
     }
 }
