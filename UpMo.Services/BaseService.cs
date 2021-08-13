@@ -18,5 +18,12 @@ namespace UpMo.Services
             _context = context;
             _logger = logger;
         }
+
+        public BaseService(IMapper mapper,
+                   UpMoContext context)
+        {
+            _mapper = mapper;
+            _context = context;
+        }
     }
 }

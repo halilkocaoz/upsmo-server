@@ -13,7 +13,13 @@ namespace UpMo.WebAPI.Controllers
     public class OrganizationsController : BaseController
     {
         private readonly IOrganizationService _organizationService;
-        public OrganizationsController(IOrganizationService organizationService) => _organizationService = organizationService;
+        private readonly IOrganizationManagerService _managerOrganizationService;
+
+        public OrganizationsController(IOrganizationService organizationService, IOrganizationManagerService managerOrganizationService)
+        {
+            _organizationService = organizationService;
+            _managerOrganizationService = managerOrganizationService;
+        }
 
         [HttpGet]
         public async Task<IActionResult> GetOrganizationsForAuthenticatedUser()
@@ -36,12 +42,12 @@ namespace UpMo.WebAPI.Controllers
         }
 
 
-        [HttpPost("Managers/{id}")]
+        [HttpPost("{id}/Managers")]
         public async Task<IActionResult> CreateManagerForOrganizationAsync([FromRoute] Guid id, [FromBody] OrganizationManagerCreateRequest request)
         {
             request.OrganizationID = id;
             request.AuthenticatedUserID = User.GetId();
-            return ApiResponse(await _organizationService.CreateManagerForOrganization(request));
+            return ApiResponse(await _managerOrganizationService.CreateAsync(request));
         }
     }
 }

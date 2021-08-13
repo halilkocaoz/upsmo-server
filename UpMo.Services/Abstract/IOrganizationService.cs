@@ -28,7 +28,5 @@ namespace UpMo.Services.Abstract
         /// <param name="authenticatedUserID"></param>
         /// <returns><see cref="ApiResponse"/> with <see cref="ResponseStatus.OK"/> and a list of organizations</returns>
         Task<ApiResponse> GetOrganizationsByAuthenticatedUserIDAsync(int authenticatedUserID);
-
-        Task<ApiResponse> CreateManagerForOrganization(OrganizationManagerCreateRequest request);
     }
 }
