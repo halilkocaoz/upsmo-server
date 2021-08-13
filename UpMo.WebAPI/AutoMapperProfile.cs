@@ -17,6 +17,8 @@ namespace UpMo.WebAPI
             
             #region Entity > DTO
             CreateMap<Organization, OrganizationResponse>();
+            CreateMap<OrganizationManager, OrganizationManagerResponse>();
+            CreateMap<AppUser, AppUserResponse>();
             #endregion
         }
     }

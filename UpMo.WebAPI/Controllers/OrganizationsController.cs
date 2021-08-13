@@ -41,7 +41,8 @@ namespace UpMo.WebAPI.Controllers
         }
 
         [HttpGet("{organizationID}/Managers")]
-        public async Task<IActionResult> GetOrganizationManagersByOrganizationIDForAuthenticatedUserAsync([FromRoute] Guid organizationID) => throw new NotImplementedException();
+        public async Task<IActionResult> GetManagersByOrganizationIDForAuthenticatedUserAsync([FromRoute] Guid organizationID) => 
+            ApiResponse(await _managerOrganizationService.GetManagersByOrganizationIDAndAuthenticatedUserID(organizationID, User.GetID()));
 
         [HttpPost("{organizationID}/Managers")]
         public async Task<IActionResult> CreateManagerAsync([FromRoute] Guid organizationID, [FromBody] OrganizationManagerCreateRequest request)

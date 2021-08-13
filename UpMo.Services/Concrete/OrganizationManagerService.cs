@@ -1,7 +1,11 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using UpMo.Common.DTO.Request;
+using UpMo.Common.DTO.Response;
 using UpMo.Common.Response;
 using UpMo.Data;
 using UpMo.Data.Extensions;
@@ -72,7 +76,20 @@ namespace UpMo.Services.Concrete
                 return new ApiResponse(ResponseStatus.OK);
             }
 
-            return new ApiResponse(ResponseStatus.Forbid, ResponseMessage.Forbid);;
+            return new ApiResponse(ResponseStatus.Forbid, ResponseMessage.Forbid); ;
+        }
+
+        public async Task<ApiResponse> GetManagersByOrganizationIDAndAuthenticatedUserID(Guid organizationID, int authenticatedUserID)
+        {
+            var organizationManagersForAuthenticatedUser = await _context.OrganizationManagers
+                                                    .Include(x  => x.Organization)
+                                                    .Include(x  => x.User)
+                                                    .Where(x    => x.OrganizationID == organizationID
+                                                                && x.Organization.CreatorUserID == authenticatedUserID)
+                                                    .ToListAsync();
+
+            object returnObject = new { organizationManagers = _mapper.Map<List<OrganizationManagerResponse>>(organizationManagersForAuthenticatedUser) };
+            return new ApiResponse(ResponseStatus.OK, returnObject);
         }
     }
 }
