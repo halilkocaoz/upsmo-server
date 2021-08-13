@@ -27,7 +27,7 @@ namespace UpMo.Data
 
             modelBuilder.Entity<OrganizationManager>(entity =>
             {
-                entity.HasOne<Organization>()
+                entity.HasOne(organizationManager => organizationManager.Organization)
                 .WithMany(organization => organization.Managers)
                 .HasForeignKey(organizationManager => organizationManager.OrganizationID);
 
