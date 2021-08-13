@@ -31,7 +31,7 @@ namespace UpMo.Data
                 .WithMany(organization => organization.Managers)
                 .HasForeignKey(organizationManager => organizationManager.OrganizationID);
 
-                entity.HasOne<AppUser>()
+                entity.HasOne(organizationManager => organizationManager.User)
                 .WithMany()
                 .HasForeignKey(organizationManager => organizationManager.UserID);
             });

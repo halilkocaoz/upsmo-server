@@ -10,5 +10,6 @@ namespace UpMo.Entities
         public bool Viewer { get; set; }
 
         public Organization Organization { get; set; }
+        public AppUser User { get; set; }
     }
 }
