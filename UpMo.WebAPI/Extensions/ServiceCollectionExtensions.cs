@@ -49,6 +49,8 @@ namespace UpMo.WebAPI.Extensions
 
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IOrganizationService, OrganizationService>();
+            services.AddTransient<IOrganizationManagerService, OrganizationManagerService>();
+
 
             services.AddAutoMapper(typeof(AutoMapperProfile));
 
