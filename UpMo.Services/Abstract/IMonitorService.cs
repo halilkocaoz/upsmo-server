@@ -11,7 +11,7 @@ namespace UpMo.Services.Abstract
         /// <para>Authenticated user must be creator or admin of the Organization</para>
         /// </summary>
         /// <param name="request"></param>
-        /// <returns><see cref="ApiResponse"/> with <see cref="ResponseStatus.Created"/> and created organization object, <see cref="ResponseStatus.NotFound"/> or <see cref="ResponseStatus.Forbid"/></returns>
+        /// <returns><see cref="ApiResponse"/> with <see cref="ResponseStatus.Created"/> and created monitor object, <see cref="ResponseStatus.NotFound"/> or <see cref="ResponseStatus.Forbid"/></returns>
         Task<ApiResponse> CreateByRequestAsync(MonitorCreateRequest request);
     }
 }

@@ -11,12 +11,15 @@ namespace UpMo.WebAPI.Controllers
     {
         private readonly IUserService _userService;
 
-        public AuthController(IUserService userService) => _userService = userService;
+        public AuthController(IUserService userService) =>
+            _userService = userService;
 
         [HttpPost("SignIn")]
-        public async Task<IActionResult> SignIn([FromBody] SignInRequest request) => ApiResponse(await _userService.SignInWithPasswordAsync(request));
+        public async Task<IActionResult> SignIn([FromBody] SignInRequest request) =>
+            ApiResponse(await _userService.SignInWithPasswordAsync(request));
 
         [HttpPost("SignUp")]
-        public async Task<IActionResult> SignUp([FromBody] SignUpRequest request) => ApiResponse(await _userService.SignUpWithPasswordAsync(request));
+        public async Task<IActionResult> SignUp([FromBody] SignUpRequest request) =>
+            ApiResponse(await _userService.SignUpWithPasswordAsync(request));
     }
 }

@@ -8,6 +8,5 @@ namespace UpMo.Common.DTO.Request
         public string Identifier { get; set; }
         [Required]
         public string Password { get; set; }
-
     }
 }
