@@ -13,12 +13,16 @@ namespace UpMo.WebAPI
             CreateMap<SignUpRequest, AppUser>();
             CreateMap<OrganizationCreateRequest, Organization>();
             CreateMap<OrganizationManagerCreateRequest, OrganizationManager>();
+            CreateMap<MonitorCreateRequest, Monitor>();
+            CreateMap<PostFormDataCreateRequest, PostFormData>();
             #endregion
             
             #region Entity > DTO
             CreateMap<Organization, OrganizationResponse>();
             CreateMap<OrganizationManager, OrganizationManagerResponse>();
             CreateMap<AppUser, AppUserResponse>();
+            CreateMap<Monitor, MonitorResponse>();
+            CreateMap<PostFormData, PostFormDataResponse>();
             #endregion
         }
     }
