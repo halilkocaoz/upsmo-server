@@ -28,5 +28,7 @@ namespace UpMo.Entities
         /// POST form body values
         /// </summary>
         public virtual ICollection<PostFormData> PostFormData { get; set; }
+
+        public virtual Organization Organization { get; set; }
     }
 }

@@ -38,7 +38,7 @@ namespace UpMo.Data
 
             modelBuilder.Entity<Monitor>(entity =>
             {
-                entity.HasOne<Organization>()
+                entity.HasOne(monitor => monitor.Organization)
                 .WithMany(organization => organization.Monitors)
                 .HasForeignKey(monitor => monitor.OrganizationID);
             });
