@@ -7,8 +7,6 @@ namespace UpMo.Common.DTO.Request
     {
         [JsonIgnore]
         public Guid ID { get; private set; } = Guid.NewGuid();
-        [JsonIgnore]
-        public Guid MonitorID { get; set; }
 
         public string Key { get; set; }
         public string Value { get; set; }

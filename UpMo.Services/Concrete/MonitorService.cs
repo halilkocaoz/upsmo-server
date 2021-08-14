@@ -3,7 +3,6 @@ using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using UpMo.Common.DTO.Request;
 using UpMo.Common.DTO.Response;
-using UpMo.Common.Monitor;
 using UpMo.Common.Response;
 using UpMo.Data;
 using UpMo.Data.Extensions;
@@ -18,7 +17,8 @@ namespace UpMo.Services.Concrete
 
         public async Task<ApiResponse> CreateByRequestAsync(MonitorCreateRequest request)
         {
-            var toBeCreateMonitorOrganization = await _context.Organizations.SingleOrDefaultAsync(x => x.ID == request.OrganizationID);
+            var toBeCreateMonitorOrganization = await _context.Organizations.Include(x => x.Managers)
+                                                                            .SingleOrDefaultAsync(x => x.ID == request.OrganizationID);
             if (toBeCreateMonitorOrganization is null)
             {
                 return new ApiResponse(ResponseStatus.NotFound, ResponseMessage.NotFoundOrganization);
@@ -28,17 +28,8 @@ namespace UpMo.Services.Concrete
             {
                 var newMonitor = _mapper.Map<Monitor>(request);
 
-                if (newMonitor.Method == MonitorMethodType.GET)
-                { // todo: ignore too from mapping
-                    newMonitor.PostFormData = null;
-                }
-
-                using (var transaction = await _context.Database.BeginTransactionAsync())
-                {
-                    await _context.AddAsync(newMonitor);
-                    await _context.SaveChangesAsync();
-                    await transaction.CommitAsync();
-                }
+                await _context.AddAsync(newMonitor);
+                await _context.SaveChangesAsync();
 
                 return new ApiResponse(ResponseStatus.Created, new { monitor = _mapper.Map<MonitorResponse>(newMonitor) });
             }
