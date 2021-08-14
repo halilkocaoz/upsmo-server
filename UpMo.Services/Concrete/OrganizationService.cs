@@ -43,7 +43,7 @@ namespace UpMo.Services.Concrete
                 await transaction.CommitAsync();
             }
 
-            return new ApiResponse(ResponseStatus.Created, _mapper.Map<OrganizationResponse>(organization));
+            return new ApiResponse(ResponseStatus.Created, new { organization = _mapper.Map<OrganizationResponse>(organization) });
         }
 
         public async Task<ApiResponse> UpdateByRequestAsync(OrganizationUpdateRequest request)
@@ -60,7 +60,7 @@ namespace UpMo.Services.Concrete
                 toBeUpdatedOrganization.Name = request.Name;
                 await _context.SaveChangesAsync();
 
-                return new ApiResponse(ResponseStatus.OK, _mapper.Map<OrganizationResponse>(toBeUpdatedOrganization));
+                return new ApiResponse(ResponseStatus.OK, new { organization = _mapper.Map<OrganizationResponse>(toBeUpdatedOrganization) });
             }
 
             return new ApiResponse(ResponseStatus.Forbid, ResponseMessage.Forbid);
@@ -69,10 +69,10 @@ namespace UpMo.Services.Concrete
         public async Task<ApiResponse> GetOrganizationsByAuthenticatedUserIDAsync(int authenticatedUserID)
         {
             var organizationsForAuthenticatedUser = await _context.Organizations
-                                                    .Include(x  => x.Managers)
-                                                    .Include(x  => x.Monitors).ThenInclude(x => x.PostFormData)
+                                                    .Include(x => x.Managers)
+                                                    .Include(x => x.Monitors).ThenInclude(x => x.PostFormData)
                                                     .AsSplitQuery()
-                                                    .Where(x    => x.CreatorUserID == authenticatedUserID
+                                                    .Where(x => x.CreatorUserID == authenticatedUserID
                                                                 || x.Managers.Any(x => x.Viewer && x.UserID == authenticatedUserID))
                                                     .ToListAsync();
 

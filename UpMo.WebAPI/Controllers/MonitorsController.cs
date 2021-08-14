@@ -24,10 +24,10 @@ namespace UpMo.WebAPI.Controllers
             return ApiResponse(await _monitorService.CreateByRequestAsync(request));
         }
 
-        [HttpPut("Monitors/{monitorID}")]
-        public async Task<IActionResult> UpdateMonitorAsync([FromRoute] Guid organizationID, [FromRoute] Guid monitorID, [FromBody] MonitorUpdateRequest request)
+        [HttpPut("Monitors/{organizationMonitorID}")]
+        public async Task<IActionResult> UpdateMonitorAsync([FromRoute] Guid organizationID, [FromRoute] Guid organizationMonitorID, [FromBody] MonitorUpdateRequest request)
         {
-            request.MonitorID = monitorID;
+            request.MonitorID = organizationMonitorID;
             request.AuthenticatedUserID = User.GetID();
             return ApiResponse(await _monitorService.UpdateByRequestAsync(request));
         }

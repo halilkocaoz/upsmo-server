@@ -52,7 +52,7 @@ namespace UpMo.Services.Concrete
                 await _context.AddAsync(newManager);
                 await _context.SaveChangesAsync();
 
-                return new ApiResponse(ResponseStatus.Created);
+                return new ApiResponse(ResponseStatus.Created, new { organizationManager = _mapper.Map<OrganizationManagerResponse>(newManager) });
             }
 
             return new ApiResponse(ResponseStatus.Forbid, ResponseMessage.Forbid);
@@ -71,21 +71,20 @@ namespace UpMo.Services.Concrete
 
             if (toBeUpdatedManager.Organization.CheckCreator(request.AuthenticatedUserID))
             {
-                toBeUpdatedManager.Admin = request.Admin;
-                toBeUpdatedManager.Viewer = request.Viewer;
+                toBeUpdatedManager = _mapper.Map(request, toBeUpdatedManager);
                 await _context.SaveChangesAsync();
-                return new ApiResponse(ResponseStatus.OK);
+                return new ApiResponse(ResponseStatus.OK, new { organizationManager = _mapper.Map<OrganizationManagerResponse>(toBeUpdatedManager) });
             }
 
-            return new ApiResponse(ResponseStatus.Forbid, ResponseMessage.Forbid); ;
+            return new ApiResponse(ResponseStatus.Forbid, ResponseMessage.Forbid);
         }
 
         public async Task<ApiResponse> GetManagersByOrganizationIDAndAuthenticatedUserID(Guid organizationID, int authenticatedUserID)
         {
             var organizationManagersForAuthenticatedUser = await _context.OrganizationManagers
-                                                    .Include(x  => x.Organization)
-                                                    .Include(x  => x.User)
-                                                    .Where(x    => x.OrganizationID == organizationID
+                                                    .Include(x => x.Organization)
+                                                    .Include(x => x.User)
+                                                    .Where(x => x.OrganizationID == organizationID
                                                                 && x.Organization.CreatorUserID == authenticatedUserID)
                                                     .ToListAsync();
 

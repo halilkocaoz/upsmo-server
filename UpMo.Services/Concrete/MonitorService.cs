@@ -40,7 +40,7 @@ namespace UpMo.Services.Concrete
                     await transaction.CommitAsync();
                 }
 
-                return new ApiResponse(ResponseStatus.Created, _mapper.Map<MonitorResponse>(newMonitor));
+                return new ApiResponse(ResponseStatus.Created, new { monitor = _mapper.Map<MonitorResponse>(newMonitor) });
             }
 
             return new ApiResponse(ResponseStatus.Forbid, ResponseMessage.Forbid);
@@ -60,8 +60,8 @@ namespace UpMo.Services.Concrete
             {
                 toBeUpdatedMonitor = _mapper.Map(request, toBeUpdatedMonitor);
                 await _context.SaveChangesAsync();
-                
-                return new ApiResponse(ResponseStatus.OK, _mapper.Map<MonitorResponse>(toBeUpdatedMonitor));
+
+                return new ApiResponse(ResponseStatus.OK, new { monitor = _mapper.Map<MonitorResponse>(toBeUpdatedMonitor) });
             }
 
             return new ApiResponse(ResponseStatus.Forbid, ResponseMessage.Forbid);
