@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text.Json.Serialization;
 using UpMo.Common.Monitor;
 
-namespace UpMo.Common.DTO.Request
+namespace UpMo.Common.DTO.Request.Monitor
 {
     public class MonitorCreateRequest
     {

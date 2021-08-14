@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UpMo.Common.Monitor;
 
-namespace UpMo.Common.DTO.Response
+namespace UpMo.Common.DTO.Response.Monitor
 {
     public class MonitorResponse
     {

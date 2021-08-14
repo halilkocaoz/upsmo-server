@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using UpMo.Common.DTO.Request;
+using UpMo.Common.DTO.Request.Auth;
 using UpMo.Services.Abstract;
 using UpMo.WebAPI.Controllers.Base;
 

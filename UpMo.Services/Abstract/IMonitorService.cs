@@ -1,5 +1,5 @@
 using System.Threading.Tasks;
-using UpMo.Common.DTO.Request;
+using UpMo.Common.DTO.Request.Monitor;
 using UpMo.Common.Response;
 
 namespace UpMo.Services.Abstract

@@ -2,7 +2,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
-using UpMo.Common.DTO.Request;
+using UpMo.Common.DTO.Request.Auth;
 using UpMo.Common.Response;
 using UpMo.Data;
 using UpMo.Entities;

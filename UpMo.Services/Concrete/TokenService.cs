@@ -14,8 +14,10 @@ namespace UpMo.Services.Concrete
     public class TokenService : ITokenService
     {
         private readonly SymmetricSecurityKey _key;
-        public TokenService(IConfiguration configuration) => _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:SECRET"]));
-        
+
+        public TokenService(IConfiguration configuration) => 
+            _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:SECRET"]));
+
         public Token CreateToken(AppUser user)
         {
             var claims = new List<Claim>
@@ -25,13 +27,14 @@ namespace UpMo.Services.Concrete
                 new Claim("UserId", user.Id.ToString()),
             };
 
-            var signCredentials = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512Signature);
-            
+            var signingCredentials = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512Signature);
+
             var expiryDate = DateTime.Now.AddDays(1);
-            
-            var tokenValue = new JwtSecurityToken(
+
+            var tokenValue = new JwtSecurityToken
+            (
                 expires: expiryDate,
-                signingCredentials: signCredentials,
+                signingCredentials: signingCredentials,
                 claims: claims
             );
 

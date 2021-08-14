@@ -1,7 +1,8 @@
 using System;
 using System.Collections.Generic;
+using UpMo.Common.DTO.Response.Monitor;
 
-namespace UpMo.Common.DTO.Response
+namespace UpMo.Common.DTO.Response.Organization
 {
     public class OrganizationResponse
     {

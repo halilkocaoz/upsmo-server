@@ -1,6 +1,6 @@
 using System;
 using System.Threading.Tasks;
-using UpMo.Common.DTO.Request;
+using UpMo.Common.DTO.Request.Organization;
 using UpMo.Common.Response;
 
 namespace UpMo.Services.Abstract

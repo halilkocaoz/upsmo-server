@@ -1,7 +1,7 @@
 using System;
 using System.Text.Json.Serialization;
 
-namespace UpMo.Common.DTO.Request
+namespace UpMo.Common.DTO.Request.Organization
 {
     public class OrganizationUpdateRequest
     {

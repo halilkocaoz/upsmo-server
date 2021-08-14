@@ -1,6 +1,6 @@
 using System;
 
-namespace UpMo.Common.DTO.Response
+namespace UpMo.Common.DTO.Response.Organization
 {
     public class OrganizationManagerResponse
     {

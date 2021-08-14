@@ -1,6 +1,10 @@
 using AutoMapper;
-using UpMo.Common.DTO.Request;
+using UpMo.Common.DTO.Request.Organization;
+using UpMo.Common.DTO.Request.Monitor;
+using UpMo.Common.DTO.Request.Auth;
 using UpMo.Common.DTO.Response;
+using UpMo.Common.DTO.Response.Organization;
+using UpMo.Common.DTO.Response.Monitor;
 using UpMo.Common.Monitor;
 using UpMo.Entities;
 

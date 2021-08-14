@@ -1,8 +1,8 @@
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using UpMo.Common.DTO.Request;
-using UpMo.Common.DTO.Response;
+using UpMo.Common.DTO.Request.Monitor;
+using UpMo.Common.DTO.Response.Monitor;
 using UpMo.Common.Response;
 using UpMo.Data;
 using UpMo.Data.Extensions;

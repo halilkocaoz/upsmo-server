@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace UpMo.Common.DTO.Request
+namespace UpMo.Common.DTO.Request.Auth
 {
     public class SignInRequest
     {
