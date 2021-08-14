@@ -1,9 +1,10 @@
+using UpMo.Common.DTO.Response;
 using UpMo.Entities;
 
 namespace UpMo.Services.Abstract
 {
     public interface ITokenService
     {
-        string CreateToken(AppUser user);
+        Token CreateToken(AppUser user);
     }
 }

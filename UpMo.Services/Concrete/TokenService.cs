@@ -7,6 +7,7 @@ using Microsoft.IdentityModel.Tokens;
 using UpMo.Entities;
 using Microsoft.Extensions.Configuration;
 using UpMo.Services.Abstract;
+using UpMo.Common.DTO.Response;
 
 namespace UpMo.Services.Concrete
 {
@@ -14,8 +15,8 @@ namespace UpMo.Services.Concrete
     {
         private readonly SymmetricSecurityKey _key;
         public TokenService(IConfiguration configuration) => _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:SECRET"]));
-
-        public string CreateToken(AppUser user)
+        
+        public Token CreateToken(AppUser user)
         {
             var claims = new List<Claim>
             {
@@ -23,15 +24,18 @@ namespace UpMo.Services.Concrete
                 new Claim(JwtRegisteredClaimNames.Aud, "https://domain.com"),
                 new Claim("UserId", user.Id.ToString()),
             };
-            
-            var signCredentials = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512Signature);
 
-            var token = new JwtSecurityToken(
-                expires: DateTime.Now.AddDays(1),
+            var signCredentials = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512Signature);
+            
+            var expiryDate = DateTime.Now.AddDays(1);
+            
+            var tokenValue = new JwtSecurityToken(
+                expires: expiryDate,
                 signingCredentials: signCredentials,
                 claims: claims
             );
-            return new JwtSecurityTokenHandler().WriteToken(token);
+
+            return new Token(new JwtSecurityTokenHandler().WriteToken(tokenValue), expiryDate);
         }
     }
 }
