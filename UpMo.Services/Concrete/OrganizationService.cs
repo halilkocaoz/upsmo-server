@@ -69,10 +69,11 @@ namespace UpMo.Services.Concrete
         public async Task<ApiResponse> GetOrganizationsByAuthenticatedUserIDAsync(int authenticatedUserID)
         {
             var organizationsForAuthenticatedUser = await _context.Organizations
-                                                    .Include(x => x.Managers)
-                                                    .Include(x => x.Monitors)
+                                                    .Include(x  => x.Managers)
+                                                    .Include(x  => x.Monitors).ThenInclude(x => x.PostFormData)
                                                     .AsSplitQuery()
-                                                    .Where(x => x.CreatorUserID == authenticatedUserID || x.Managers.Any(x => x.Viewer && x.UserID == authenticatedUserID))
+                                                    .Where(x    => x.CreatorUserID == authenticatedUserID
+                                                                || x.Managers.Any(x => x.Viewer && x.UserID == authenticatedUserID))
                                                     .ToListAsync();
 
             object returnObject = new { organizations = _mapper.Map<List<OrganizationResponse>>(organizationsForAuthenticatedUser) };

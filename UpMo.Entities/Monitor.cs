@@ -8,7 +8,7 @@ namespace UpMo.Entities
     {
         public Monitor()
         {
-            PostBodyValues = new HashSet<MonitorPostBody>();
+            PostFormData = new HashSet<PostFormData>();
         }
         
         public Guid OrganizationID { get; set; }
@@ -27,6 +27,6 @@ namespace UpMo.Entities
         /// <summary>
         /// POST form body values
         /// </summary>
-        public virtual ICollection<MonitorPostBody> PostBodyValues { get; set; }
+        public virtual ICollection<PostFormData> PostFormData { get; set; }
     }
 }
