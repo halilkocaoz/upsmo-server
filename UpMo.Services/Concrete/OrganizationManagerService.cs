@@ -61,7 +61,8 @@ namespace UpMo.Services.Concrete
         public async Task<ApiResponse> UpdateByRequestAsync(OrganizationManagerUpdateRequest request)
         {
             var toBeUpdatedManager = await _context.OrganizationManagers.Include(x => x.Organization)
-                                                                                    .SingleOrDefaultAsync(x => x.ID == request.OrganizationManagerID);
+                                                                        .ThenInclude(x => x.Managers)
+                                                                        .SingleOrDefaultAsync(x => x.ID == request.OrganizationManagerID);
 
             if (toBeUpdatedManager is null)
             {

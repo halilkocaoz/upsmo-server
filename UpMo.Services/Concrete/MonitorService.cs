@@ -32,18 +32,39 @@ namespace UpMo.Services.Concrete
                 { // todo: ignore too from mapping
                     newMonitor.PostFormData = null;
                 }
-                
+
                 using (var transaction = await _context.Database.BeginTransactionAsync())
                 {
                     await _context.AddAsync(newMonitor);
                     await _context.SaveChangesAsync();
                     await transaction.CommitAsync();
                 }
-                
+
                 return new ApiResponse(ResponseStatus.Created, _mapper.Map<MonitorResponse>(newMonitor));
             }
 
-            return new ApiResponse(ResponseStatus.Forbid, ResponseMessage.Forbid); ;
+            return new ApiResponse(ResponseStatus.Forbid, ResponseMessage.Forbid);
+        }
+
+        public async Task<ApiResponse> UpdateByRequestAsync(MonitorUpdateRequest request)
+        {
+            var toBeUpdatedMonitor = await _context.Monitors.Include(x => x.Organization)
+                                                            .ThenInclude(x => x.Managers)
+                                                            .SingleOrDefaultAsync(x => x.ID == request.MonitorID);
+            if (toBeUpdatedMonitor is null)
+            {
+                return new ApiResponse(ResponseStatus.NotFound, ResponseMessage.NotFoundMonitor);
+            }
+
+            if (toBeUpdatedMonitor.Organization.CheckCreatorOrAdmin(request.AuthenticatedUserID))
+            {
+                toBeUpdatedMonitor = _mapper.Map(request, toBeUpdatedMonitor);
+                await _context.SaveChangesAsync();
+                
+                return new ApiResponse(ResponseStatus.OK, _mapper.Map<MonitorResponse>(toBeUpdatedMonitor));
+            }
+
+            return new ApiResponse(ResponseStatus.Forbid, ResponseMessage.Forbid);
         }
     }
 }
