@@ -8,45 +8,45 @@ using UpMo.WebAPI.Extensions;
 
 namespace UpMo.WebAPI.Controllers
 {
-    [Route("/organizations/{organizationID}/monitors/{monitorID}/postdata")]
-    public class PostDataController : AuthorizeController
+    [Route("/organizations/{organizationID}/monitors/{monitorID}/postforms")]
+    public class PostFormsController : AuthorizeController
     {
-        private readonly IMonitorPostDataService _postDataService;
+        private readonly IPostFormService _postFormService;
 
-        public PostDataController(IMonitorPostDataService postDataService) =>
-            _postDataService = postDataService;
+        public PostFormsController(IPostFormService postFormService) =>
+            _postFormService = postFormService;
 
         [HttpPost]
         public async Task<IActionResult> CreateAsync(
             Guid organizationID,
             Guid monitorID,
-            PostFormDataCreateRequest request)
+            PostFormCreateRequest request)
         {
             request.OrganizationID = organizationID;
             request.MonitorID = monitorID;
             request.AuthenticatedUserID = User.GetID();
-            return ApiResponse(await _postDataService.CreateByRequestAsync(request));
+            return ApiResponse(await _postFormService.CreateByRequestAsync(request));
         }
 
-        [HttpPut("{postDataID}")]
+        [HttpPut("{postFormID}")]
         public async Task<IActionResult> UpdateAsync(
             Guid organizationID,
             Guid monitorID,
-            Guid postDataID,
-            PostFormDataUpdateRequest request)
+            Guid postFormID,
+            PostFormUpdateRequest request)
         {
             request.OrganizationID = organizationID;
             request.MonitorID = monitorID;
-            request.ID = postDataID;
+            request.ID = postFormID;
             request.AuthenticatedUserID = User.GetID();
-            return ApiResponse(await _postDataService.UpdateByRequestAsync(request));
+            return ApiResponse(await _postFormService.UpdateByRequestAsync(request));
         }
 
-        [HttpDelete("{postDataID}")]
+        [HttpDelete("{postFormID}")]
         public async Task<IActionResult> DeleteAsync(
             Guid organizationID,
             Guid monitorID,
-            Guid postDataID) => 
-            ApiResponse(await _postDataService.SoftDeleteByIDsAsync(postDataID, monitorID, organizationID, User.GetID()));
+            Guid postFormID) => 
+            ApiResponse(await _postFormService.SoftDeleteByIDsAsync(postFormID, monitorID, organizationID, User.GetID()));
     }
 }

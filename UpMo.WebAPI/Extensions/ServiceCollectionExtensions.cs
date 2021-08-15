@@ -51,7 +51,7 @@ namespace UpMo.WebAPI.Extensions
             services.AddTransient<IOrganizationService, OrganizationService>();
             services.AddTransient<IOrganizationManagerService, OrganizationManagerService>();
             services.AddTransient<IMonitorService, MonitorService>();
-            services.AddTransient<IMonitorPostDataService, MonitorPostDataService>();
+            services.AddTransient<IPostFormService, PostFormService>();
 
 
 

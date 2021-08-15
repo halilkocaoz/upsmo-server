@@ -2,7 +2,7 @@ using System;
 
 namespace UpMo.Common.DTO.Response.Monitor
 {
-    public class PostFormDataResponse
+    public class PostFormResponse
     {
         public Guid ID { get; set; }
         public string Key { get; set; }

@@ -5,7 +5,7 @@ namespace UpMo.Entities
     /// <summary>
     /// POST form body values for monitor
     /// </summary>
-    public class PostFormData : BaseEntity<Guid>
+    public class PostForm : BaseEntity<Guid>
     {
         public Guid MonitorID { get; set; }
         public string Key { get; set; }

@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace UpMo.Common.DTO.Request.Monitor
 {
-    public class PostFormDataUpdateRequest
+    public class PostFormUpdateRequest
     {
         [JsonIgnore]
         public Guid ID { get; set; }

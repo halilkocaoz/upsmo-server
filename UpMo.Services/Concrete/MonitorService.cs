@@ -65,7 +65,7 @@ namespace UpMo.Services.Concrete
 
         public async Task<ApiResponse> GetMonitorsByOrganizationIDForAuthenticatedUser(Guid organizationID, int authenticatedUserID)
         {
-            var monitorsForAuthenticatedUser = await _context.Monitors.Include(x => x.PostFormData)
+            var monitorsForAuthenticatedUser = await _context.Monitors.Include(x => x.PostForms)
                                                     .Include(x => x.Organization).ThenInclude(x => x.Managers)
                                                     .AsSplitQuery()
                                                     .Where(x => x.OrganizationID == organizationID

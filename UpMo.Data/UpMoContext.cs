@@ -11,7 +11,7 @@ namespace UpMo.Data
         public DbSet<Organization> Organizations { get; set; }
         public DbSet<OrganizationManager> OrganizationManagers { get; set; }
         public DbSet<Monitor> Monitors { get; set; }
-        public DbSet<PostFormData> PostFormData { get; set; }
+        public DbSet<PostForm> PostForms { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -49,12 +49,12 @@ namespace UpMo.Data
                 .HasForeignKey(monitor => monitor.OrganizationID);
             });
 
-            modelBuilder.Entity<PostFormData>(entity =>
+            modelBuilder.Entity<PostForm>(entity =>
             {
                 entity.HasQueryFilter(x => !x.DeletedAt.HasValue);
 
                 entity.HasOne(x => x.Monitor)
-                .WithMany(monitor => monitor.PostFormData)
+                .WithMany(monitor => monitor.PostForms)
                 .HasForeignKey(x => x.MonitorID);
             });
 

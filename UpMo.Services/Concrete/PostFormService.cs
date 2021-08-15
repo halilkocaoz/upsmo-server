@@ -13,15 +13,15 @@ using UpMo.Services.Abstract;
 
 namespace UpMo.Services.Concrete
 {
-    public class MonitorPostDataService : BaseService, IMonitorPostDataService
+    public class PostFormService : BaseService, IPostFormService
     {
-        public MonitorPostDataService(
+        public PostFormService(
             IMapper mapper,
             UpMoContext context) : base(mapper, context)
         {
         }
 
-        public async Task<ApiResponse> CreateByRequestAsync(PostFormDataCreateRequest request)
+        public async Task<ApiResponse> CreateByRequestAsync(PostFormCreateRequest request)
         {
             var monitor = await _context.Monitors.Include(x => x.Organization)
                                                  .ThenInclude(x => x.Managers)
@@ -41,19 +41,19 @@ namespace UpMo.Services.Concrete
                     return new ApiResponse(ResponseStatus.BadRequest, ResponseMessage.MonitorNotPost);
                 }
 
-                var newPostData = _mapper.Map<PostFormData>(request);
-                await _context.AddAsync(newPostData);
+                var newPostForm = _mapper.Map<PostForm>(request);
+                await _context.AddAsync(newPostForm);
                 await _context.SaveChangesAsync();
 
-                return new ApiResponse(ResponseStatus.Created, new { postData = _mapper.Map<PostFormDataResponse>(newPostData) });
+                return new ApiResponse(ResponseStatus.Created, new { postForm = _mapper.Map<PostFormResponse>(newPostForm) });
             }
 
             return new ApiResponse(ResponseStatus.Forbid, ResponseMessage.Forbid);
         }
 
-        public async Task<ApiResponse> UpdateByRequestAsync(PostFormDataUpdateRequest request)
+        public async Task<ApiResponse> UpdateByRequestAsync(PostFormUpdateRequest request)
         {
-            var toBeUpdatedPostData = await _context.PostFormData.Include(x => x.Monitor)
+            var toBeUpdatedPostForm = await _context.PostForms.Include(x => x.Monitor)
                                                                  .ThenInclude(x => x.Organization)
                                                                  .ThenInclude(x => x.Managers)
                                                                  .SingleOrDefaultAsync(x =>
@@ -61,38 +61,38 @@ namespace UpMo.Services.Concrete
                                                                     x.MonitorID == request.MonitorID &&
                                                                     x.Monitor.OrganizationID == request.OrganizationID);
 
-            if (toBeUpdatedPostData is null)
+            if (toBeUpdatedPostForm is null)
             {
-                return new ApiResponse(ResponseStatus.NotFound, ResponseMessage.NotFoundMonitorPostData);
+                return new ApiResponse(ResponseStatus.NotFound, ResponseMessage.NotFoundMonitorPostForm);
             }
 
-            if (toBeUpdatedPostData.Monitor.Organization.CheckCreatorOrAdmin(request.AuthenticatedUserID))
+            if (toBeUpdatedPostForm.Monitor.Organization.CheckCreatorOrAdmin(request.AuthenticatedUserID))
             {
-                toBeUpdatedPostData = _mapper.Map(request, toBeUpdatedPostData);
+                toBeUpdatedPostForm = _mapper.Map(request, toBeUpdatedPostForm);
                 await _context.SaveChangesAsync();
-                return new ApiResponse(ResponseStatus.OK, new { postData = _mapper.Map<PostFormDataResponse>(toBeUpdatedPostData) });
+                return new ApiResponse(ResponseStatus.OK, new { postForm = _mapper.Map<PostFormResponse>(toBeUpdatedPostForm) });
             }
 
             return new ApiResponse(ResponseStatus.Forbid, ResponseMessage.Forbid);
         }
 
-        public async Task<ApiResponse> SoftDeleteByIDsAsync(Guid postDataID, Guid monitorID, Guid organizationID, int authenticatedUserID)
+        public async Task<ApiResponse> SoftDeleteByIDsAsync(Guid postFormID, Guid monitorID, Guid organizationID, int authenticatedUserID)
         {
-            var toBeSoftDeletedPostData = await _context.PostFormData.Include(x => x.Monitor)
+            var toBeSoftDeletedPostForm = await _context.PostForms.Include(x => x.Monitor)
                                                                  .ThenInclude(x => x.Organization)
                                                                  .ThenInclude(x => x.Managers)
                                                                  .SingleOrDefaultAsync(x =>
-                                                                    x.ID == postDataID &&
+                                                                    x.ID == postFormID &&
                                                                     x.MonitorID == monitorID &&
                                                                     x.Monitor.OrganizationID == organizationID);
-            if (toBeSoftDeletedPostData is null)
+            if (toBeSoftDeletedPostForm is null)
             {
-                return new ApiResponse(ResponseStatus.NotFound, ResponseMessage.NotFoundMonitorPostData);
+                return new ApiResponse(ResponseStatus.NotFound, ResponseMessage.NotFoundMonitorPostForm);
             }
 
-            if (toBeSoftDeletedPostData.Monitor.Organization.CheckCreatorOrAdmin(authenticatedUserID))
+            if (toBeSoftDeletedPostForm.Monitor.Organization.CheckCreatorOrAdmin(authenticatedUserID))
             {
-                toBeSoftDeletedPostData.DeletedAt = DateTime.Now;
+                toBeSoftDeletedPostForm.DeletedAt = DateTime.Now;
                 await _context.SaveChangesAsync();
                 return new ApiResponse(ResponseStatus.NoContent);
             }

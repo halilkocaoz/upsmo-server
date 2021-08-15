@@ -13,6 +13,6 @@ namespace UpMo.Common.DTO.Response.Monitor
         public MonitorMethodType Method { get; set; }
         public MonitorCheckIntervalMs IntervalMs { get; set; }
 
-        public List<PostFormDataResponse> PostFormData { get; set; }
+        public List<PostFormResponse> PostForms { get; set; }
     }
 }

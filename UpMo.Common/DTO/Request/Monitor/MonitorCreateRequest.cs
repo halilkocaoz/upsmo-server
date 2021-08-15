@@ -21,6 +21,6 @@ namespace UpMo.Common.DTO.Request.Monitor
 
         public MonitorCheckIntervalMs IntervalMs { get; set; }
 
-        public List<PostFormDataCreateRequest> PostFormData { get; set; }
+        public List<PostFormCreateRequest> PostForms { get; set; }
     }
 }
