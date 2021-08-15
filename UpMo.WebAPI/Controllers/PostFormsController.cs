@@ -20,7 +20,7 @@ namespace UpMo.WebAPI.Controllers
         public async Task<IActionResult> CreateAsync(
             Guid organizationID,
             Guid monitorID,
-            PostFormCreateRequest request)
+            PostFormRequest request)
         {
             request.OrganizationID = organizationID;
             request.MonitorID = monitorID;
@@ -33,7 +33,7 @@ namespace UpMo.WebAPI.Controllers
             Guid organizationID,
             Guid monitorID,
             Guid postFormID,
-            PostFormUpdateRequest request)
+            PostFormRequest request)
         {
             request.OrganizationID = organizationID;
             request.MonitorID = monitorID;

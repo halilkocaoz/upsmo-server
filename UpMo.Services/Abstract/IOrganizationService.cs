@@ -12,16 +12,16 @@ namespace UpMo.Services.Abstract
         /// </summary>
         /// <param name="request"></param>
         /// <returns><see cref="ApiResponse"/> with <see cref="ResponseStatus.Created"/> and created organization object.</returns>
-        Task<ApiResponse> CreateByRequestAsync(OrganizationCreateRequest request);
+        Task<ApiResponse> CreateByRequestAsync(OrganizationRequest request);
 
         /// <summary>
-        /// Updates organization by ID, if <see cref="OrganizationUpdateRequest.AuthenticatedUserID"/> equals any admin or creator user id for the Organization.
+        /// Updates organization by ID, if <see cref="OrganizationRequest.AuthenticatedUserID"/> equals any admin or creator user id for the Organization.
         /// <para>Authenticated user must be creator or admin of the Organization</para>
         /// </summary>
         /// <param name="toBeUpdatedOrganizationID"></param>
         /// <param name="request"></param>
         /// <returns><see cref="ApiResponse"/> with <see cref="ResponseStatus.OK"/> and updated organization object or <see cref="ResponseStatus.Forbid"/>.</returns>
-        Task<ApiResponse> UpdateByRequestAsync(OrganizationUpdateRequest request);
+        Task<ApiResponse> UpdateByRequestAsync(OrganizationRequest request);
 
         Task<ApiResponse> SoftDeleteByIDAsync(Guid organizationID, int authenticatedUserID);
 

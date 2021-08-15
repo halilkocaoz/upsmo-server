@@ -21,7 +21,7 @@ namespace UpMo.Services.Concrete
         {
         }
 
-        public async Task<ApiResponse> CreateByRequestAsync(PostFormCreateRequest request)
+        public async Task<ApiResponse> CreateByRequestAsync(PostFormRequest request)
         {
             var monitor = await _context.Monitors.Include(x => x.Organization)
                                                  .ThenInclude(x => x.Managers)
@@ -51,7 +51,7 @@ namespace UpMo.Services.Concrete
             return new ApiResponse(ResponseStatus.Forbid, ResponseMessage.Forbid);
         }
 
-        public async Task<ApiResponse> UpdateByRequestAsync(PostFormUpdateRequest request)
+        public async Task<ApiResponse> UpdateByRequestAsync(PostFormRequest request)
         {
             var toBeUpdatedPostForm = await _context.PostForms.Include(x => x.Monitor)
                                                                  .ThenInclude(x => x.Organization)

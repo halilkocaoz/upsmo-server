@@ -21,16 +21,16 @@ namespace UpMo.WebAPI.Controllers
             ApiResponse(await _organizationService.GetOrganizationsByAuthenticatedUserIDAsync(User.GetID()));
 
         [HttpPost]
-        public async Task<IActionResult> CreateAsync(OrganizationCreateRequest request)
+        public async Task<IActionResult> CreateAsync(OrganizationRequest request)
         {
-            request.CreatorUserID = User.GetID();
+            request.AuthenticatedUserID = User.GetID();
             return ApiResponse(await _organizationService.CreateByRequestAsync(request));
         }
 
         [HttpPut("{organizationID}")]
         public async Task<IActionResult> UpdateAsync(
             Guid organizationID,
-            OrganizationUpdateRequest request)
+            OrganizationRequest request)
         {
             request.ID = organizationID;
             request.AuthenticatedUserID = User.GetID();

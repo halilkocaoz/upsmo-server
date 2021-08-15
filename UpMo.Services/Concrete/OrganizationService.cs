@@ -21,14 +21,12 @@ namespace UpMo.Services.Concrete
         {
         }
 
-        public async Task<ApiResponse> CreateByRequestAsync(OrganizationCreateRequest request)
+        public async Task<ApiResponse> CreateByRequestAsync(OrganizationRequest request)
         {
             var organization = _mapper.Map<Organization>(request);
 
-            var Manager = new Manager
+            var manager = new Manager
             {
-                ID = System.Guid.NewGuid(),
-                OrganizationID = organization.ID,
                 UserID = organization.CreatorUserID,
                 Admin = true,
                 Viewer = true
@@ -37,7 +35,8 @@ namespace UpMo.Services.Concrete
             using (var transaction = await _context.Database.BeginTransactionAsync())
             {
                 await _context.AddAsync(organization);
-                await _context.AddAsync(Manager);
+                manager.OrganizationID = organization.ID;
+                await _context.AddAsync(manager);
                 await _context.SaveChangesAsync();
 
                 await transaction.CommitAsync();
@@ -46,7 +45,7 @@ namespace UpMo.Services.Concrete
             return new ApiResponse(ResponseStatus.Created, new { organization = _mapper.Map<OrganizationResponse>(organization) });
         }
 
-        public async Task<ApiResponse> UpdateByRequestAsync(OrganizationUpdateRequest request)
+        public async Task<ApiResponse> UpdateByRequestAsync(OrganizationRequest request)
         {
             var toBeUpdatedOrganization = await _context.Organizations.Include(x => x.Managers)
                                                                       .SingleOrDefaultAsync(x => x.ID == request.ID);
