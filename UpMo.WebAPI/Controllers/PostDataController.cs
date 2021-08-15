@@ -27,5 +27,19 @@ namespace UpMo.WebAPI.Controllers
             request.AuthenticatedUserID = User.GetID();
             return ApiResponse(await _postDataService.CreateByRequestAsync(request));
         }
+
+        [HttpPut("{postDataID}")]
+        public async Task<IActionResult> CreateAsync(
+            Guid organizationID,
+            Guid monitorID,
+            Guid postDataID,
+            PostFormDataUpdateRequest request)
+        {
+            request.OrganizationID = organizationID;
+            request.MonitorID = monitorID;
+            request.ID = postDataID;
+            request.AuthenticatedUserID = User.GetID();
+            return ApiResponse(await _postDataService.UpdateByRequestAsync(request));
+        }
     }
 }

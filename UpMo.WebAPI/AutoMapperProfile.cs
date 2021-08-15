@@ -30,6 +30,7 @@ namespace UpMo.WebAPI
             CreateMap<MonitorUpdateRequest, Monitor>();
 
             CreateMap<PostFormDataCreateRequest, PostFormData>();
+            CreateMap<PostFormDataUpdateRequest, PostFormData>();
             #endregion
 
             #region Entity > DTO

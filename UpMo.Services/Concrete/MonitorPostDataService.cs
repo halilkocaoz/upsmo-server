@@ -44,7 +44,32 @@ namespace UpMo.Services.Concrete
                 await _context.AddAsync(newPostData);
                 await _context.SaveChangesAsync();
 
-                return new ApiResponse(ResponseStatus.Created, new { monitor = _mapper.Map<PostFormDataResponse>(newPostData) });
+                return new ApiResponse(ResponseStatus.Created, new { postData = _mapper.Map<PostFormDataResponse>(newPostData) });
+            }
+
+            return new ApiResponse(ResponseStatus.Forbid, ResponseMessage.Forbid);
+        }
+
+        public async Task<ApiResponse> UpdateByRequestAsync(PostFormDataUpdateRequest request)
+        {
+            var toBeUpdatedPostData = await _context.PostFormData.Include(x => x.Monitor)
+                                                                 .ThenInclude(x => x.Organization)
+                                                                 .ThenInclude(x => x.Managers)
+                                                                 .SingleOrDefaultAsync(x =>
+                                                                    x.ID == request.ID &&
+                                                                    x.MonitorID == request.MonitorID &&
+                                                                    x.Monitor.OrganizationID == request.OrganizationID);
+
+            if (toBeUpdatedPostData is null)
+            {
+                return new ApiResponse(ResponseStatus.NotFound, ResponseMessage.NotFoundMonitorPostData);
+            }
+
+            if (toBeUpdatedPostData.Monitor.Organization.CheckCreatorOrAdmin(request.AuthenticatedUserID))
+            {
+                toBeUpdatedPostData = _mapper.Map(request, toBeUpdatedPostData);
+                await _context.SaveChangesAsync();
+                return new ApiResponse(ResponseStatus.OK, new { postData = _mapper.Map<PostFormDataResponse>(toBeUpdatedPostData) });
             }
 
             return new ApiResponse(ResponseStatus.Forbid, ResponseMessage.Forbid);

@@ -7,5 +7,7 @@ namespace UpMo.Services.Abstract
     public interface IMonitorPostDataService
     {
         Task<ApiResponse> CreateByRequestAsync(PostFormDataCreateRequest request);
+
+        Task<ApiResponse> UpdateByRequestAsync(PostFormDataUpdateRequest request);
     }
 }

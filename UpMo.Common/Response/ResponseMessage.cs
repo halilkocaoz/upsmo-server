@@ -18,6 +18,8 @@ namespace UpMo.Common.Response
         public static readonly string NotFoundManager = $"{notFoundStarting} Manager";
 
         public static readonly string NotFoundMonitor = $"{notFoundStarting} Monitor";
+        public static readonly string NotFoundMonitorPostData = $"{notFoundStarting} Monitor Post Data";
+
         public static readonly string NotFoundUser = $"{notFoundStarting} User";
         #endregion
 
