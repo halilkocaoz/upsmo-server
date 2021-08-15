@@ -10,5 +10,7 @@ namespace UpMo.Entities
         public Guid MonitorID { get; set; }
         public string Key { get; set; }
         public string Value { get; set; }
+
+        public Monitor Monitor { get; set; }
     }
 }

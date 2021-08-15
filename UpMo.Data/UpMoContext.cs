@@ -53,9 +53,9 @@ namespace UpMo.Data
             {
                 entity.HasQueryFilter(x => !x.DeletedAt.HasValue);
 
-                entity.HasOne<Monitor>()
+                entity.HasOne(x => x.Monitor)
                 .WithMany(monitor => monitor.PostFormData)
-                .HasForeignKey(monitorpostbody => monitorpostbody.MonitorID);
+                .HasForeignKey(x => x.MonitorID);
             });
 
             base.OnModelCreating(modelBuilder);
