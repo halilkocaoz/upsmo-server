@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace UpMo.Common.DTO.Request.Organization
 {
-    public class OrganizationManagerCreateRequest
+    public class ManagerCreateRequest
     {
         [JsonIgnore]
         public Guid ID { get; set; } = System.Guid.NewGuid();

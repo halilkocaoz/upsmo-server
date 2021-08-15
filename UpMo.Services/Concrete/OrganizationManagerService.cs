@@ -21,7 +21,7 @@ namespace UpMo.Services.Concrete
         {
         }
 
-        public async Task<ApiResponse> CreateByRequestAsync(OrganizationManagerCreateRequest request)
+        public async Task<ApiResponse> CreateByRequestAsync(ManagerCreateRequest request)
         {
             var toBeCreatedAManagerOrganization = await _context.Organizations.SingleOrDefaultAsync(x => x.ID == request.OrganizationID);
 
@@ -58,7 +58,7 @@ namespace UpMo.Services.Concrete
             return new ApiResponse(ResponseStatus.Forbid, ResponseMessage.Forbid);
         }
 
-        public async Task<ApiResponse> UpdateByRequestAsync(OrganizationManagerUpdateRequest request)
+        public async Task<ApiResponse> UpdateByRequestAsync(ManagerUpdateRequest request)
         {
             var toBeUpdatedManager = await _context.OrganizationManagers.Include(x => x.Organization)
                                                                         .ThenInclude(x => x.Managers)

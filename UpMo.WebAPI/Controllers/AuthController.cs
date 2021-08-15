@@ -15,11 +15,11 @@ namespace UpMo.WebAPI.Controllers
             _userService = userService;
 
         [HttpPost("SignIn")]
-        public async Task<IActionResult> SignIn([FromBody] SignInRequest request) =>
+        public async Task<IActionResult> SignIn(SignInRequest request) =>
             ApiResponse(await _userService.SignInWithPasswordAsync(request));
 
         [HttpPost("SignUp")]
-        public async Task<IActionResult> SignUp([FromBody] SignUpRequest request) =>
+        public async Task<IActionResult> SignUp(SignUpRequest request) =>
             ApiResponse(await _userService.SignUpWithPasswordAsync(request));
     }
 }

@@ -21,7 +21,7 @@ namespace UpMo.WebAPI.Controllers
             ApiResponse(await _organizationService.GetOrganizationsByAuthenticatedUserIDAsync(User.GetID()));
 
         [HttpPost]
-        public async Task<IActionResult> CreateAsync([FromBody] OrganizationCreateRequest request)
+        public async Task<IActionResult> CreateAsync(OrganizationCreateRequest request)
         {
             request.CreatorUserID = User.GetID();
             return ApiResponse(await _organizationService.CreateByRequestAsync(request));
@@ -29,8 +29,8 @@ namespace UpMo.WebAPI.Controllers
 
         [HttpPut("{organizationID}")]
         public async Task<IActionResult> UpdateAsync(
-            [FromRoute] Guid organizationID,
-            [FromBody] OrganizationUpdateRequest request)
+            Guid organizationID,
+            OrganizationUpdateRequest request)
         {
             request.ID = organizationID;
             request.AuthenticatedUserID = User.GetID();
@@ -38,7 +38,7 @@ namespace UpMo.WebAPI.Controllers
         }
 
         [HttpDelete("{organizationID}")]
-        public async Task<IActionResult> DeleteAsync([FromRoute] Guid organizationID) =>
+        public async Task<IActionResult> DeleteAsync(Guid organizationID) =>
             ApiResponse(await _organizationService.SoftDeleteByIDAsync(organizationID, User.GetID()));
     }
 }

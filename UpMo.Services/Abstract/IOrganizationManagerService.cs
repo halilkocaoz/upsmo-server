@@ -13,7 +13,7 @@ namespace UpMo.Services.Abstract
         /// </summary>
         /// <param name="request"></param>
         /// <returns><see cref="ApiResponse"/> with <see cref="ResponseStatus.Created"/>, <see cref="ResponseStatus.BadRequest"/>, <see cref="ResponseStatus.NotFound"/> or <see cref="ResponseStatus.Forbid"/></returns>
-        Task<ApiResponse> CreateByRequestAsync(OrganizationManagerCreateRequest request);
+        Task<ApiResponse> CreateByRequestAsync(ManagerCreateRequest request);
 
         /// <summary>
         /// Updates created manager 
@@ -21,7 +21,7 @@ namespace UpMo.Services.Abstract
         /// </summary>
         /// <param name="request"></param>
         /// <returns><see cref="ApiResponse"/> with <see cref="ResponseStatus.OK"/>, <see cref="ResponseStatus.NotFound"/> or <see cref="ResponseStatus.Forbid"/></returns>
-        Task<ApiResponse> UpdateByRequestAsync(OrganizationManagerUpdateRequest request);
+        Task<ApiResponse> UpdateByRequestAsync(ManagerUpdateRequest request);
 
         Task<ApiResponse> SoftDeleteByIDAsync(Guid organizationManagerID, int authenticatedUserID);
 

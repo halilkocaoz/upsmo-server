@@ -20,8 +20,8 @@ namespace UpMo.WebAPI
             CreateMap<OrganizationCreateRequest, Organization>();
             CreateMap<OrganizationUpdateRequest, Organization>();
 
-            CreateMap<OrganizationManagerCreateRequest, OrganizationManager>();
-            CreateMap<OrganizationManagerUpdateRequest, OrganizationManager>();
+            CreateMap<ManagerCreateRequest, OrganizationManager>();
+            CreateMap<ManagerUpdateRequest, OrganizationManager>();
 
             CreateMap<MonitorCreateRequest, Monitor>().ForMember(monitor => monitor.PostFormData, opts =>
             {

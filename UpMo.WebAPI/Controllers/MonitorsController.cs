@@ -17,13 +17,13 @@ namespace UpMo.WebAPI.Controllers
             _monitorService = monitorService;
 
         [HttpGet]
-        public async Task<IActionResult> GetMonitorsByOrganizationIDForAuthenticatedUserAsync([FromRoute] Guid organizationID) =>
+        public async Task<IActionResult> GetMonitorsByOrganizationIDForAuthenticatedUserAsync(Guid organizationID) =>
             ApiResponse(await _monitorService.GetMonitorsByOrganizationIDForAuthenticatedUser(organizationID, User.GetID()));
 
         [HttpPost]
         public async Task<IActionResult> CreateAsync(
-            [FromRoute] Guid organizationID,
-            [FromBody] MonitorCreateRequest request)
+            Guid organizationID,
+            MonitorCreateRequest request)
         {
             request.OrganizationID = organizationID;
             request.AuthenticatedUserID = User.GetID();
@@ -32,9 +32,9 @@ namespace UpMo.WebAPI.Controllers
 
         [HttpPut("{monitorID}")]
         public async Task<IActionResult> UpdateAsync(
-            [FromRoute] Guid organizationID,
-            [FromRoute] Guid monitorID,
-            [FromBody] MonitorUpdateRequest request)
+            Guid organizationID,
+            Guid monitorID,
+            MonitorUpdateRequest request)
         {
             request.ID = monitorID;
             request.AuthenticatedUserID = User.GetID();
@@ -43,8 +43,8 @@ namespace UpMo.WebAPI.Controllers
 
         [HttpDelete("{monitorID}")]
         public async Task<IActionResult> DeleteAsync(
-            [FromRoute] Guid organizationID,
-            [FromRoute] Guid monitorID) =>
+            Guid organizationID,
+            Guid monitorID) =>
             ApiResponse(await _monitorService.SoftDeleteByIDAsync(monitorID: monitorID, User.GetID()));
     }
 }

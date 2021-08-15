@@ -17,13 +17,14 @@ namespace UpMo.WebAPI.Controllers
             _managerOrganizationService = managerOrganizationService;
 
         [HttpGet("managers")]
-        public async Task<IActionResult> GetManagersByOrganizationIDForAuthenticatedUserAsync([FromRoute] Guid organizationID) =>
+        public async Task<IActionResult> GetManagersByOrganizationIDForAuthenticatedUserAsync(
+            Guid organizationID) =>
             ApiResponse(await _managerOrganizationService.GetManagersByOrganizationIDAndAuthenticatedUserID(organizationID, User.GetID()));
 
         [HttpPost("managers")]
         public async Task<IActionResult> CreateAsync(
-            [FromRoute] Guid organizationID,
-            [FromBody] OrganizationManagerCreateRequest request)
+            Guid organizationID,
+            ManagerCreateRequest request)
         {
             request.OrganizationID = organizationID;
             request.AuthenticatedUserID = User.GetID();
@@ -32,9 +33,9 @@ namespace UpMo.WebAPI.Controllers
 
         [HttpPut("managers/{managerID}")]
         public async Task<IActionResult> UpdateAsync(
-            [FromRoute] Guid organizationID,
-            [FromRoute] Guid managerID,
-            [FromBody] OrganizationManagerUpdateRequest request)
+            Guid organizationID,
+            Guid managerID,
+            ManagerUpdateRequest request)
         {
             request.ID = managerID;
             request.AuthenticatedUserID = User.GetID();
@@ -43,8 +44,8 @@ namespace UpMo.WebAPI.Controllers
 
         [HttpDelete("managers/{managerID}")]
         public async Task<IActionResult> DeleteAsync(
-            [FromRoute] Guid organizationID,
-            [FromRoute] Guid managerID) =>
+            Guid organizationID,
+            Guid managerID) =>
             ApiResponse(await _managerOrganizationService.SoftDeleteByIDAsync(organizationManagerID: managerID, User.GetID()));
     }
 }

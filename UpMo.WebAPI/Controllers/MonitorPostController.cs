@@ -18,9 +18,9 @@ namespace UpMo.WebAPI.Controllers
 
         [HttpPost]
         public async Task<IActionResult> CreateAsync(
-            [FromRoute] Guid organizationID,
-            [FromRoute] Guid monitorID,
-            [FromBody] PostFormDataCreateRequest request)
+            Guid organizationID,
+            Guid monitorID,
+            PostFormDataCreateRequest request)
         {
             request.MonitorID = monitorID;
             request.AuthenticatedUserID = User.GetID();
