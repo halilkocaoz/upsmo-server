@@ -8,7 +8,7 @@ using UpMo.WebAPI.Extensions;
 
 namespace UpMo.WebAPI.Controllers
 {
-    [Route("[controller]")]
+    [Route("organizations")]
     public class OrganizationsController : AuthorizeController
     {
         private readonly IOrganizationService _organizationService;
@@ -21,14 +21,16 @@ namespace UpMo.WebAPI.Controllers
             ApiResponse(await _organizationService.GetOrganizationsByAuthenticatedUserIDAsync(User.GetID()));
 
         [HttpPost]
-        public async Task<IActionResult> CreateAsync(OrganizationCreateRequest request)
+        public async Task<IActionResult> CreateAsync([FromBody] OrganizationCreateRequest request)
         {
             request.CreatorUserID = User.GetID();
             return ApiResponse(await _organizationService.CreateByRequestAsync(request));
         }
 
         [HttpPut("{organizationID}")]
-        public async Task<IActionResult> UpdateAsync([FromRoute] Guid organizationID, [FromBody] OrganizationUpdateRequest request)
+        public async Task<IActionResult> UpdateAsync(
+            [FromRoute] Guid organizationID,
+            [FromBody] OrganizationUpdateRequest request)
         {
             request.ID = organizationID;
             request.AuthenticatedUserID = User.GetID();

@@ -8,7 +8,7 @@ using UpMo.WebAPI.Extensions;
 
 namespace UpMo.WebAPI.Controllers
 {
-    [Route("Organizations/{organizationID}")]
+    [Route("organizations/{organizationID}")]
     public class ManagersController : AuthorizeController
     {
         private readonly IOrganizationManagerService _managerOrganizationService;
@@ -16,28 +16,35 @@ namespace UpMo.WebAPI.Controllers
         public ManagersController(IOrganizationManagerService managerOrganizationService) =>
             _managerOrganizationService = managerOrganizationService;
 
-        [HttpGet("Managers")]
+        [HttpGet("managers")]
         public async Task<IActionResult> GetManagersByOrganizationIDForAuthenticatedUserAsync([FromRoute] Guid organizationID) =>
             ApiResponse(await _managerOrganizationService.GetManagersByOrganizationIDAndAuthenticatedUserID(organizationID, User.GetID()));
 
-        [HttpPost("Managers")]
-        public async Task<IActionResult> CreateAsync([FromRoute] Guid organizationID, [FromBody] OrganizationManagerCreateRequest request)
+        [HttpPost("managers")]
+        public async Task<IActionResult> CreateAsync(
+            [FromRoute] Guid organizationID,
+            [FromBody] OrganizationManagerCreateRequest request)
         {
             request.OrganizationID = organizationID;
             request.AuthenticatedUserID = User.GetID();
             return ApiResponse(await _managerOrganizationService.CreateByRequestAsync(request));
         }
 
-        [HttpPut("Managers/{organizationManagerID}")]
-        public async Task<IActionResult> UpdateAsync([FromRoute] Guid organizationID, [FromRoute] Guid organizationManagerID, [FromBody] OrganizationManagerUpdateRequest request)
+        [HttpPut("managers/{managerID}")]
+        public async Task<IActionResult> UpdateAsync(
+            [FromRoute] Guid organizationID,
+            [FromRoute] Guid managerID,
+            [FromBody] OrganizationManagerUpdateRequest request)
         {
-            request.ID = organizationManagerID;
+            request.ID = managerID;
             request.AuthenticatedUserID = User.GetID();
             return ApiResponse(await _managerOrganizationService.UpdateByRequestAsync(request));
         }
 
-        [HttpDelete("Managers/{organizationManagerID}")]
-        public async Task<IActionResult> DeleteAsync([FromRoute] Guid organizationID, [FromRoute] Guid organizationManagerID) =>
-            ApiResponse(await _managerOrganizationService.SoftDeleteByIDAsync(organizationManagerID: organizationManagerID, User.GetID()));
+        [HttpDelete("managers/{managerID}")]
+        public async Task<IActionResult> DeleteAsync(
+            [FromRoute] Guid organizationID,
+            [FromRoute] Guid managerID) =>
+            ApiResponse(await _managerOrganizationService.SoftDeleteByIDAsync(organizationManagerID: managerID, User.GetID()));
     }
 }
