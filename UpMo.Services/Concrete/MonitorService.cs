@@ -44,7 +44,7 @@ namespace UpMo.Services.Concrete
         {
             var toBeUpdatedMonitor = await _context.Monitors.Include(x => x.Organization)
                                                             .ThenInclude(x => x.Managers)
-                                                            .SingleOrDefaultAsync(x => x.ID == request.MonitorID);
+                                                            .SingleOrDefaultAsync(x => x.ID == request.ID);
             if (toBeUpdatedMonitor is null)
             {
                 return new ApiResponse(ResponseStatus.NotFound, ResponseMessage.NotFoundMonitor);

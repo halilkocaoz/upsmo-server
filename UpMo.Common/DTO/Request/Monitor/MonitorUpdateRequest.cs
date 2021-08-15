@@ -7,7 +7,7 @@ namespace UpMo.Common.DTO.Request.Monitor
     public class MonitorUpdateRequest
     {
         [JsonIgnore]
-        public Guid MonitorID { get; set; }
+        public Guid ID { get; set; }
         [JsonIgnore]
         public int AuthenticatedUserID { get; set; }
 

@@ -30,7 +30,7 @@ namespace UpMo.WebAPI.Controllers
         [HttpPut("{organizationID}")]
         public async Task<IActionResult> UpdateAsync([FromRoute] Guid organizationID, [FromBody] OrganizationUpdateRequest request)
         {
-            request.OrganizationID = organizationID;
+            request.ID = organizationID;
             request.AuthenticatedUserID = User.GetID();
             return ApiResponse(await _organizationService.UpdateByRequestAsync(request));
         }

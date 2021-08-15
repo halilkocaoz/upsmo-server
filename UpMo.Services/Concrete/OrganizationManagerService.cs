@@ -62,7 +62,7 @@ namespace UpMo.Services.Concrete
         {
             var toBeUpdatedManager = await _context.OrganizationManagers.Include(x => x.Organization)
                                                                         .ThenInclude(x => x.Managers)
-                                                                        .SingleOrDefaultAsync(x => x.ID == request.OrganizationManagerID);
+                                                                        .SingleOrDefaultAsync(x => x.ID == request.ID);
 
             if (toBeUpdatedManager is null)
             {

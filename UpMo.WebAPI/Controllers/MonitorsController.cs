@@ -31,7 +31,7 @@ namespace UpMo.WebAPI.Controllers
         [HttpPut("Monitors/{organizationMonitorID}")]
         public async Task<IActionResult> UpdateAsync([FromRoute] Guid organizationID, [FromRoute] Guid organizationMonitorID, [FromBody] MonitorUpdateRequest request)
         {
-            request.MonitorID = organizationMonitorID;
+            request.ID = organizationMonitorID;
             request.AuthenticatedUserID = User.GetID();
             return ApiResponse(await _monitorService.UpdateByRequestAsync(request));
         }

@@ -6,7 +6,7 @@ namespace UpMo.Common.DTO.Request.Organization
     public class OrganizationUpdateRequest
     {
         [JsonIgnore]
-        public Guid OrganizationID { get; set; }
+        public Guid ID { get; set; }
 
         [JsonIgnore]
         public int AuthenticatedUserID { get; set; }

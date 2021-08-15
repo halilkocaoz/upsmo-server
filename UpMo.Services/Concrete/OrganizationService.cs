@@ -49,7 +49,7 @@ namespace UpMo.Services.Concrete
         public async Task<ApiResponse> UpdateByRequestAsync(OrganizationUpdateRequest request)
         {
             var toBeUpdatedOrganization = await _context.Organizations.Include(x => x.Managers)
-                                                                      .SingleOrDefaultAsync(x => x.ID == request.OrganizationID);
+                                                                      .SingleOrDefaultAsync(x => x.ID == request.ID);
             if (toBeUpdatedOrganization is null)
             {
                 return new ApiResponse(ResponseStatus.NotFound, ResponseMessage.NotFoundOrganization);
