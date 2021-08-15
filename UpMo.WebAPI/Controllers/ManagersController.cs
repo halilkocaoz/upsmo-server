@@ -38,6 +38,7 @@ namespace UpMo.WebAPI.Controllers
             ManagerUpdateRequest request)
         {
             request.ID = managerID;
+            request.OrganizationID = organizationID;
             request.AuthenticatedUserID = User.GetID();
             return ApiResponse(await _managerOrganizationService.UpdateByRequestAsync(request));
         }
@@ -46,6 +47,6 @@ namespace UpMo.WebAPI.Controllers
         public async Task<IActionResult> DeleteAsync(
             Guid organizationID,
             Guid managerID) =>
-            ApiResponse(await _managerOrganizationService.SoftDeleteByIDAsync(organizationManagerID: managerID, User.GetID()));
+            ApiResponse(await _managerOrganizationService.SoftDeleteByIDsAsync(organizationID, managerID, User.GetID()));
     }
 }

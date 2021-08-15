@@ -44,7 +44,9 @@ namespace UpMo.Services.Concrete
         {
             var toBeUpdatedMonitor = await _context.Monitors.Include(x => x.Organization)
                                                             .ThenInclude(x => x.Managers)
-                                                            .SingleOrDefaultAsync(x => x.ID == request.ID);
+                                                            .SingleOrDefaultAsync(x =>
+                                                                x.ID == request.ID
+                                                                && x.OrganizationID == request.OrganizationID);
             if (toBeUpdatedMonitor is null)
             {
                 return new ApiResponse(ResponseStatus.NotFound, ResponseMessage.NotFoundMonitor);
@@ -77,11 +79,13 @@ namespace UpMo.Services.Concrete
             return new ApiResponse(ResponseStatus.OK, returnObject);
         }
 
-        public async Task<ApiResponse> SoftDeleteByIDAsync(Guid monitorID, int authenticatedUserID)
+        public async Task<ApiResponse> SoftDeleteByIDsAsync(Guid organizationID, Guid monitorID, int authenticatedUserID)
         {
             var toBeSoftDeletedMonitor = await _context.Monitors.Include(x => x.Organization)
                                                                 .ThenInclude(x => x.Managers)
-                                                                .SingleOrDefaultAsync(monitor => monitor.ID == monitorID);
+                                                                .SingleOrDefaultAsync(x => 
+                                                                    x.ID == monitorID
+                                                                    && x.OrganizationID == organizationID);
             if (toBeSoftDeletedMonitor is null)
             {
                 return new ApiResponse(ResponseStatus.NotFound, ResponseMessage.NotFoundMonitor);

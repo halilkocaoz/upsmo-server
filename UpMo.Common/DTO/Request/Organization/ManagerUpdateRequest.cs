@@ -8,6 +8,8 @@ namespace UpMo.Common.DTO.Request.Organization
         [JsonIgnore]
         public Guid ID { get; set; }
         [JsonIgnore]
+        public Guid OrganizationID { get; set; }
+        [JsonIgnore]
         public int AuthenticatedUserID { get; set; }
 
         public bool Admin { get; set; }

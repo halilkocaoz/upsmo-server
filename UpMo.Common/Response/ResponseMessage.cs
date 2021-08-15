@@ -15,6 +15,8 @@ namespace UpMo.Common.Response
 
         #region Not Found
         public static readonly string NotFoundOrganization = $"{notFoundStarting} Organization";
+        public static readonly string NotFoundManager = $"{notFoundStarting} Manager";
+
         public static readonly string NotFoundMonitor = $"{notFoundStarting} Monitor";
         public static readonly string NotFoundUser = $"{notFoundStarting} User";
         #endregion

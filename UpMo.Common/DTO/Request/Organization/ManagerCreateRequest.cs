@@ -7,10 +7,8 @@ namespace UpMo.Common.DTO.Request.Organization
     {
         [JsonIgnore]
         public Guid ID { get; set; } = System.Guid.NewGuid();
-
         [JsonIgnore]
         public Guid OrganizationID { get; set; }
-        
         [JsonIgnore]
         public int AuthenticatedUserID { get; set; }
 

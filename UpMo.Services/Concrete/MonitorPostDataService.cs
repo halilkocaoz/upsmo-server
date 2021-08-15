@@ -22,8 +22,11 @@ namespace UpMo.Services.Concrete
 
         public async Task<ApiResponse> CreateByRequestAsync(PostFormDataCreateRequest request)
         {
-            var monitor = await _context.Monitors.Include(x => x.Organization).ThenInclude(x => x.Managers)
-                                                 .SingleOrDefaultAsync(x => x.ID == request.MonitorID);
+            var monitor = await _context.Monitors.Include(x => x.Organization)
+                                                 .ThenInclude(x => x.Managers)
+                                                 .SingleOrDefaultAsync(x =>
+                                                    x.ID == request.MonitorID
+                                                    && x.OrganizationID == request.OrganizationID);
 
             if (monitor is null)
             {

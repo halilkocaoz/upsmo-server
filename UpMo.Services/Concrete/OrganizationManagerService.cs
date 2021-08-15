@@ -61,12 +61,13 @@ namespace UpMo.Services.Concrete
         public async Task<ApiResponse> UpdateByRequestAsync(ManagerUpdateRequest request)
         {
             var toBeUpdatedManager = await _context.OrganizationManagers.Include(x => x.Organization)
-                                                                        .ThenInclude(x => x.Managers)
-                                                                        .SingleOrDefaultAsync(x => x.ID == request.ID);
+                                                                        .SingleOrDefaultAsync(x =>
+                                                                            x.ID == request.ID
+                                                                            && x.OrganizationID == request.OrganizationID);
 
             if (toBeUpdatedManager is null)
             {
-                return new ApiResponse(ResponseStatus.NotFound, ResponseMessage.NotFoundOrganization);
+                return new ApiResponse(ResponseStatus.NotFound, ResponseMessage.NotFoundManager);
             }
 
             if (toBeUpdatedManager.Organization.CheckCreator(request.AuthenticatedUserID))
@@ -79,13 +80,15 @@ namespace UpMo.Services.Concrete
             return new ApiResponse(ResponseStatus.Forbid, ResponseMessage.Forbid);
         }
 
-        public async Task<ApiResponse> SoftDeleteByIDAsync(Guid organizationManagerID, int authenticatedUserID)
+        public async Task<ApiResponse> SoftDeleteByIDsAsync(Guid organizationID, Guid managerID, int authenticatedUserID)
         {
             var toBeSoftDeletedManager = await _context.OrganizationManagers.Include(x => x.Organization)
-                                                                            .SingleOrDefaultAsync(x => x.ID == organizationManagerID);
+                                                                            .SingleOrDefaultAsync(x =>
+                                                                                x.ID == managerID
+                                                                                && x.OrganizationID == organizationID);
             if (toBeSoftDeletedManager is null)
             {
-                return new ApiResponse(ResponseStatus.NotFound, ResponseMessage.NotFoundOrganization);
+                return new ApiResponse(ResponseStatus.NotFound, ResponseMessage.NotFoundManager);
             }
 
             if (toBeSoftDeletedManager.Organization.CheckCreator(authenticatedUserID))
@@ -97,7 +100,7 @@ namespace UpMo.Services.Concrete
 
             return new ApiResponse(ResponseStatus.Forbid, ResponseMessage.Forbid);
         }
-        
+
         public async Task<ApiResponse> GetManagersByOrganizationIDAndAuthenticatedUserID(Guid organizationID, int authenticatedUserID)
         {
             var organizationManagersForAuthenticatedUser = await _context.OrganizationManagers

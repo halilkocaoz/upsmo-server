@@ -37,6 +37,7 @@ namespace UpMo.WebAPI.Controllers
             MonitorUpdateRequest request)
         {
             request.ID = monitorID;
+            request.OrganizationID = organizationID;
             request.AuthenticatedUserID = User.GetID();
             return ApiResponse(await _monitorService.UpdateByRequestAsync(request));
         }
@@ -45,6 +46,6 @@ namespace UpMo.WebAPI.Controllers
         public async Task<IActionResult> DeleteAsync(
             Guid organizationID,
             Guid monitorID) =>
-            ApiResponse(await _monitorService.SoftDeleteByIDAsync(monitorID: monitorID, User.GetID()));
+            ApiResponse(await _monitorService.SoftDeleteByIDsAsync(organizationID, monitorID, User.GetID()));
     }
 }

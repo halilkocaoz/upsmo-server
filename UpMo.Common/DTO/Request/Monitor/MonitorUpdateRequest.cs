@@ -9,6 +9,8 @@ namespace UpMo.Common.DTO.Request.Monitor
         [JsonIgnore]
         public Guid ID { get; set; }
         [JsonIgnore]
+        public Guid OrganizationID { get; set; }
+        [JsonIgnore]
         public int AuthenticatedUserID { get; set; }
 
         public string Name { get; set; }

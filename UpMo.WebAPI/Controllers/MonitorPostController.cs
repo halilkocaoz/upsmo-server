@@ -22,6 +22,7 @@ namespace UpMo.WebAPI.Controllers
             Guid monitorID,
             PostFormDataCreateRequest request)
         {
+            request.OrganizationID = organizationID;
             request.MonitorID = monitorID;
             request.AuthenticatedUserID = User.GetID();
             return ApiResponse(await _postDataService.CreateByRequestAsync(request));
