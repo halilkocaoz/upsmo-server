@@ -22,11 +22,15 @@ namespace UpMo.Data
 
             modelBuilder.Entity<Organization>(entity =>
             {
+                entity.HasQueryFilter(x => !x.DeletedAt.HasValue);
+
                 entity.HasOne<AppUser>().WithMany().HasForeignKey(organization => organization.CreatorUserID);
             });
 
             modelBuilder.Entity<OrganizationManager>(entity =>
             {
+                entity.HasQueryFilter(x => !x.DeletedAt.HasValue);
+
                 entity.HasOne(organizationManager => organizationManager.Organization)
                 .WithMany(organization => organization.Managers)
                 .HasForeignKey(organizationManager => organizationManager.OrganizationID);
@@ -38,6 +42,8 @@ namespace UpMo.Data
 
             modelBuilder.Entity<Monitor>(entity =>
             {
+                entity.HasQueryFilter(x => !x.DeletedAt.HasValue);
+
                 entity.HasOne(monitor => monitor.Organization)
                 .WithMany(organization => organization.Monitors)
                 .HasForeignKey(monitor => monitor.OrganizationID);
@@ -45,6 +51,8 @@ namespace UpMo.Data
 
             modelBuilder.Entity<PostFormData>(entity =>
             {
+                entity.HasQueryFilter(x => !x.DeletedAt.HasValue);
+
                 entity.HasOne<Monitor>()
                 .WithMany(monitor => monitor.PostFormData)
                 .HasForeignKey(monitorpostbody => monitorpostbody.MonitorID);

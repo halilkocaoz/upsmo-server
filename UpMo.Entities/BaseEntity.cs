@@ -13,5 +13,6 @@ namespace UpMo.Entities
         public T ID { get; set; }
 
         public DateTime CreatedAt { get; private set; }
+        public DateTime? DeletedAt { get; set; }
     }
 }
