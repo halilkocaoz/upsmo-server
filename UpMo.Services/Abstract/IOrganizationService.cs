@@ -23,6 +23,8 @@ namespace UpMo.Services.Abstract
         /// <returns><see cref="ApiResponse"/> with <see cref="ResponseStatus.OK"/> and updated organization object or <see cref="ResponseStatus.Forbid"/>.</returns>
         Task<ApiResponse> UpdateByRequestAsync(OrganizationUpdateRequest request);
 
+        Task<ApiResponse> SoftDeleteByIDAsync(Guid organizationID, int authenticatedUserID);
+
         /// <summary>
         /// Gets organizations for authenticated user by id of user.
         /// </summary>

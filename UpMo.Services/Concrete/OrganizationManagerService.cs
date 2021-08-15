@@ -79,6 +79,25 @@ namespace UpMo.Services.Concrete
             return new ApiResponse(ResponseStatus.Forbid, ResponseMessage.Forbid);
         }
 
+        public async Task<ApiResponse> SoftDeleteByIDAsync(Guid organizationManagerID, int authenticatedUserID)
+        {
+            var toBeSoftDeletedManager = await _context.OrganizationManagers.Include(x => x.Organization)
+                                                                            .SingleOrDefaultAsync(x => x.ID == organizationManagerID);
+            if (toBeSoftDeletedManager is null)
+            {
+                return new ApiResponse(ResponseStatus.NotFound, ResponseMessage.NotFoundOrganization);
+            }
+
+            if (toBeSoftDeletedManager.Organization.CheckCreator(authenticatedUserID))
+            {
+                toBeSoftDeletedManager.DeletedAt = DateTime.Now;
+                await _context.SaveChangesAsync();
+                return new ApiResponse(ResponseStatus.NoContent);
+            }
+
+            return new ApiResponse(ResponseStatus.Forbid, ResponseMessage.Forbid);
+        }
+        
         public async Task<ApiResponse> GetManagersByOrganizationIDAndAuthenticatedUserID(Guid organizationID, int authenticatedUserID)
         {
             var organizationManagersForAuthenticatedUser = await _context.OrganizationManagers
@@ -91,5 +110,7 @@ namespace UpMo.Services.Concrete
             object returnObject = new { organizationManagers = _mapper.Map<List<OrganizationManagerResponse>>(organizationManagersForAuthenticatedUser) };
             return new ApiResponse(ResponseStatus.OK, returnObject);
         }
+
+
     }
 }

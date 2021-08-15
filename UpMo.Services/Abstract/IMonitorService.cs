@@ -22,6 +22,8 @@ namespace UpMo.Services.Abstract
         /// <returns><see cref="ApiResponse"/> with <see cref="ResponseStatus.OK"/> and updated monitor object, <see cref="ResponseStatus.NotFound"/> or <see cref="ResponseStatus.Forbid"/></returns>
         Task<ApiResponse> UpdateByRequestAsync(MonitorUpdateRequest request);
 
+        Task<ApiResponse> SoftDeleteByIDAsync(Guid monitorID, int authenticatedUserID);
+
         /// <summary>
         /// Gets monitors by Organization ID
         /// <para>Authenticated user must be creator, admin or viewer of the Organization</para>

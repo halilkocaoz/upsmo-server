@@ -13,7 +13,7 @@ namespace UpMo.WebAPI.Controllers
     {
         private readonly IOrganizationManagerService _managerOrganizationService;
 
-        public ManagersController(IOrganizationManagerService managerOrganizationService) => 
+        public ManagersController(IOrganizationManagerService managerOrganizationService) =>
             _managerOrganizationService = managerOrganizationService;
 
         [HttpGet("Managers")]
@@ -21,7 +21,7 @@ namespace UpMo.WebAPI.Controllers
             ApiResponse(await _managerOrganizationService.GetManagersByOrganizationIDAndAuthenticatedUserID(organizationID, User.GetID()));
 
         [HttpPost("Managers")]
-        public async Task<IActionResult> CreateManagerAsync([FromRoute] Guid organizationID, [FromBody] OrganizationManagerCreateRequest request)
+        public async Task<IActionResult> CreateAsync([FromRoute] Guid organizationID, [FromBody] OrganizationManagerCreateRequest request)
         {
             request.OrganizationID = organizationID;
             request.AuthenticatedUserID = User.GetID();
@@ -29,11 +29,15 @@ namespace UpMo.WebAPI.Controllers
         }
 
         [HttpPut("Managers/{organizationManagerID}")]
-        public async Task<IActionResult> UpdateManagerAsync([FromRoute] Guid organizationID, [FromRoute] Guid organizationManagerID, [FromBody] OrganizationManagerUpdateRequest request)
+        public async Task<IActionResult> UpdateAsync([FromRoute] Guid organizationID, [FromRoute] Guid organizationManagerID, [FromBody] OrganizationManagerUpdateRequest request)
         {
             request.OrganizationManagerID = organizationManagerID;
             request.AuthenticatedUserID = User.GetID();
             return ApiResponse(await _managerOrganizationService.UpdateByRequestAsync(request));
         }
+
+        [HttpDelete("Managers/{organizationManagerID}")]
+        public async Task<IActionResult> DeleteAsync([FromRoute] Guid organizationID, [FromRoute] Guid organizationManagerID) =>
+            ApiResponse(await _managerOrganizationService.SoftDeleteByIDAsync(organizationManagerID: organizationManagerID, User.GetID()));
     }
 }

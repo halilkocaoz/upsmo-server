@@ -63,7 +63,7 @@ namespace UpMo.Services.Concrete
 
         public async Task<ApiResponse> GetMonitorsByOrganizationIDForAuthenticatedUser(Guid organizationID, int authenticatedUserID)
         {
-            var monitorsForAuthenticatedUser = await _context.Monitors.Include(x=>x.PostFormData)
+            var monitorsForAuthenticatedUser = await _context.Monitors.Include(x => x.PostFormData)
                                                     .Include(x => x.Organization).ThenInclude(x => x.Managers)
                                                     .AsSplitQuery()
                                                     .Where(x => x.OrganizationID == organizationID
@@ -75,6 +75,26 @@ namespace UpMo.Services.Concrete
 
             object returnObject = new { monitors = _mapper.Map<List<MonitorResponse>>(monitorsForAuthenticatedUser) };
             return new ApiResponse(ResponseStatus.OK, returnObject);
+        }
+
+        public async Task<ApiResponse> SoftDeleteByIDAsync(Guid monitorID, int authenticatedUserID)
+        {
+            var toBeSoftDeletedMonitor = await _context.Monitors.Include(x => x.Organization)
+                                                                .ThenInclude(x => x.Managers)
+                                                                .SingleOrDefaultAsync(monitor => monitor.ID == monitorID);
+            if (toBeSoftDeletedMonitor is null)
+            {
+                return new ApiResponse(ResponseStatus.NotFound, ResponseMessage.NotFoundMonitor);
+            }
+
+            if (toBeSoftDeletedMonitor.Organization.CheckCreatorOrAdmin(authenticatedUserID))
+            {
+                toBeSoftDeletedMonitor.DeletedAt = DateTime.Now;
+                await _context.SaveChangesAsync();
+                return new ApiResponse(ResponseStatus.NoContent);
+            }
+
+            return new ApiResponse(ResponseStatus.Forbid, ResponseMessage.Forbid);
         }
     }
 }

@@ -23,6 +23,8 @@ namespace UpMo.Services.Abstract
         /// <returns><see cref="ApiResponse"/> with <see cref="ResponseStatus.OK"/>, <see cref="ResponseStatus.NotFound"/> or <see cref="ResponseStatus.Forbid"/></returns>
         Task<ApiResponse> UpdateByRequestAsync(OrganizationManagerUpdateRequest request);
 
+        Task<ApiResponse> SoftDeleteByIDAsync(Guid organizationManagerID, int authenticatedUserID);
+
         /// <summary>
         /// Get managers by Organization ID and Authenticated User ID
         /// <para>Authenticated user must be creator of the Organization</para>

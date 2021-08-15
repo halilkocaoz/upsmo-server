@@ -13,7 +13,7 @@ namespace UpMo.WebAPI.Controllers
     {
         private readonly IOrganizationService _organizationService;
 
-        public OrganizationsController(IOrganizationService organizationService) => 
+        public OrganizationsController(IOrganizationService organizationService) =>
             _organizationService = organizationService;
 
         [HttpGet]
@@ -34,5 +34,9 @@ namespace UpMo.WebAPI.Controllers
             request.AuthenticatedUserID = User.GetID();
             return ApiResponse(await _organizationService.UpdateByRequestAsync(request));
         }
+
+        [HttpDelete("{organizationID}")]
+        public async Task<IActionResult> DeleteAsync([FromRoute] Guid organizationID) =>
+            ApiResponse(await _organizationService.SoftDeleteByIDAsync(organizationID, User.GetID()));
     }
 }

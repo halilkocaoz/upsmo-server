@@ -66,6 +66,24 @@ namespace UpMo.Services.Concrete
             return new ApiResponse(ResponseStatus.Forbid, ResponseMessage.Forbid);
         }
 
+        public async Task<ApiResponse> SoftDeleteByIDAsync(Guid organizationID, int authenticatedUserID)
+        {
+            var toBeSofDeletedOrganization = await _context.Organizations.SingleOrDefaultAsync(x => x.ID == organizationID);
+            if (toBeSofDeletedOrganization is null)
+            {
+                return new ApiResponse(ResponseStatus.NotFound, ResponseMessage.NotFoundOrganization);
+            }
+
+            if (toBeSofDeletedOrganization.CheckCreator(authenticatedUserID))
+            {
+                toBeSofDeletedOrganization.DeletedAt = DateTime.Now;
+                await _context.SaveChangesAsync();
+                return new ApiResponse(ResponseStatus.NoContent);
+            }
+
+            return new ApiResponse(ResponseStatus.Forbid, ResponseMessage.Forbid);
+        }
+
         public async Task<ApiResponse> GetOrganizationsByAuthenticatedUserIDAsync(int authenticatedUserID)
         {
             var organizationsForAuthenticatedUser = await _context.Organizations

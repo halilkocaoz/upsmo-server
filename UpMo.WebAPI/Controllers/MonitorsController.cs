@@ -13,15 +13,15 @@ namespace UpMo.WebAPI.Controllers
     {
         private readonly IMonitorService _monitorService;
 
-        public MonitorsController(IMonitorService monitorService) => 
+        public MonitorsController(IMonitorService monitorService) =>
             _monitorService = monitorService;
 
         [HttpGet("Monitors")]
-        public async Task<IActionResult> GetMonitorsByOrganizationIDForAuthenticatedUserAsync([FromRoute] Guid organizationID) => 
+        public async Task<IActionResult> GetMonitorsByOrganizationIDForAuthenticatedUserAsync([FromRoute] Guid organizationID) =>
             ApiResponse(await _monitorService.GetMonitorsByOrganizationIDForAuthenticatedUser(organizationID, User.GetID()));
 
         [HttpPost("Monitors")]
-        public async Task<IActionResult> CreateMonitorAsync([FromRoute] Guid organizationID, [FromBody] MonitorCreateRequest request)
+        public async Task<IActionResult> CreateAsync([FromRoute] Guid organizationID, [FromBody] MonitorCreateRequest request)
         {
             request.OrganizationID = organizationID;
             request.AuthenticatedUserID = User.GetID();
@@ -29,11 +29,15 @@ namespace UpMo.WebAPI.Controllers
         }
 
         [HttpPut("Monitors/{organizationMonitorID}")]
-        public async Task<IActionResult> UpdateMonitorAsync([FromRoute] Guid organizationID, [FromRoute] Guid organizationMonitorID, [FromBody] MonitorUpdateRequest request)
+        public async Task<IActionResult> UpdateAsync([FromRoute] Guid organizationID, [FromRoute] Guid organizationMonitorID, [FromBody] MonitorUpdateRequest request)
         {
             request.MonitorID = organizationMonitorID;
             request.AuthenticatedUserID = User.GetID();
             return ApiResponse(await _monitorService.UpdateByRequestAsync(request));
         }
+
+        [HttpDelete("Monitors/{organizationMonitorID}")]
+        public async Task<IActionResult> DeleteAsync([FromRoute] Guid organizationID, [FromRoute] Guid organizationMonitorID) =>
+            ApiResponse(await _monitorService.SoftDeleteByIDAsync(monitorID: organizationMonitorID, User.GetID()));
     }
 }
