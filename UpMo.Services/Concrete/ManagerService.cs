@@ -14,23 +14,23 @@ using UpMo.Services.Abstract;
 
 namespace UpMo.Services.Concrete
 {
-    public class OrganizationManagerService : BaseService, IOrganizationManagerService
+    public class ManagerService : BaseService, IManagerService
     {
-        public OrganizationManagerService(IMapper mapper,
+        public ManagerService(IMapper mapper,
                                           UpMoContext context) : base(mapper, context)
         {
         }
 
         public async Task<ApiResponse> CreateByRequestAsync(ManagerCreateRequest request)
         {
-            var toBeCreatedAManagerOrganization = await _context.Organizations.SingleOrDefaultAsync(x => x.ID == request.OrganizationID);
+            var organization = await _context.Organizations.SingleOrDefaultAsync(x => x.ID == request.OrganizationID);
 
-            if (toBeCreatedAManagerOrganization is null)
+            if (organization is null)
             {
                 return new ApiResponse(ResponseStatus.NotFound, ResponseMessage.NotFoundOrganization);
             }
 
-            if (toBeCreatedAManagerOrganization.CheckCreator(request.AuthenticatedUserID))
+            if (organization.CheckCreator(request.AuthenticatedUserID))
             {
                 var willBeManagerUser = await _context.Users.FirstOrDefaultAsync(x => x.UserName == request.Identifier
                                                                                     || x.Email == request.Identifier);
@@ -39,20 +39,20 @@ namespace UpMo.Services.Concrete
                     return new ApiResponse(ResponseStatus.NotFound, ResponseMessage.NotFoundUser);
                 }
 
-                bool userAlreadyManagerAtGivenOrganization = await _context.OrganizationManagers
-                     .AnyAsync(x => x.UserID == willBeManagerUser.Id && x.OrganizationID == toBeCreatedAManagerOrganization.ID);
+                bool userAlreadyManagerAtGivenOrganization = await _context.Managers
+                     .AnyAsync(x => x.UserID == willBeManagerUser.Id && x.OrganizationID == organization.ID);
 
                 if (userAlreadyManagerAtGivenOrganization) // todo: take precautions too on database side
                 {
                     return new ApiResponse(ResponseStatus.BadRequest, ResponseMessage.AlreadyManager);
                 }
 
-                var newManager = _mapper.Map<OrganizationManager>(request);
+                var newManager = _mapper.Map<Manager>(request);
                 newManager.UserID = willBeManagerUser.Id;
                 await _context.AddAsync(newManager);
                 await _context.SaveChangesAsync();
 
-                return new ApiResponse(ResponseStatus.Created, new { organizationManager = _mapper.Map<OrganizationManagerResponse>(newManager) });
+                return new ApiResponse(ResponseStatus.Created, new { Manager = _mapper.Map<ManagerResponse>(newManager) });
             }
 
             return new ApiResponse(ResponseStatus.Forbid, ResponseMessage.Forbid);
@@ -60,7 +60,7 @@ namespace UpMo.Services.Concrete
 
         public async Task<ApiResponse> UpdateByRequestAsync(ManagerUpdateRequest request)
         {
-            var toBeUpdatedManager = await _context.OrganizationManagers.Include(x => x.Organization)
+            var toBeUpdatedManager = await _context.Managers.Include(x => x.Organization)
                                                                         .SingleOrDefaultAsync(x =>
                                                                             x.ID == request.ID
                                                                             && x.OrganizationID == request.OrganizationID);
@@ -74,7 +74,7 @@ namespace UpMo.Services.Concrete
             {
                 toBeUpdatedManager = _mapper.Map(request, toBeUpdatedManager);
                 await _context.SaveChangesAsync();
-                return new ApiResponse(ResponseStatus.OK, new { organizationManager = _mapper.Map<OrganizationManagerResponse>(toBeUpdatedManager) });
+                return new ApiResponse(ResponseStatus.OK, new { Manager = _mapper.Map<ManagerResponse>(toBeUpdatedManager) });
             }
 
             return new ApiResponse(ResponseStatus.Forbid, ResponseMessage.Forbid);
@@ -82,7 +82,7 @@ namespace UpMo.Services.Concrete
 
         public async Task<ApiResponse> SoftDeleteByIDsAsync(Guid organizationID, Guid managerID, int authenticatedUserID)
         {
-            var toBeSoftDeletedManager = await _context.OrganizationManagers.Include(x => x.Organization)
+            var toBeSoftDeletedManager = await _context.Managers.Include(x => x.Organization)
                                                                             .SingleOrDefaultAsync(x =>
                                                                                 x.ID == managerID
                                                                                 && x.OrganizationID == organizationID);
@@ -103,14 +103,14 @@ namespace UpMo.Services.Concrete
 
         public async Task<ApiResponse> GetManagersByOrganizationIDAndAuthenticatedUserID(Guid organizationID, int authenticatedUserID)
         {
-            var organizationManagersForAuthenticatedUser = await _context.OrganizationManagers
+            var managersForAuthenticatedUser = await _context.Managers
                                                     .Include(x => x.Organization)
                                                     .Include(x => x.User)
                                                     .Where(x => x.OrganizationID == organizationID
                                                                 && x.Organization.CreatorUserID == authenticatedUserID)
                                                     .ToListAsync();
 
-            object returnObject = new { organizationManagers = _mapper.Map<List<OrganizationManagerResponse>>(organizationManagersForAuthenticatedUser) };
+            object returnObject = new { Managers = _mapper.Map<List<ManagerResponse>>(managersForAuthenticatedUser) };
             return new ApiResponse(ResponseStatus.OK, returnObject);
         }
 

@@ -2,7 +2,7 @@ using System;
 
 namespace UpMo.Entities
 {
-    public class OrganizationManager : BaseEntity<Guid>
+    public class Manager : BaseEntity<Guid>
     {
         public Guid OrganizationID { get; set; }
         public int UserID { get; set; }

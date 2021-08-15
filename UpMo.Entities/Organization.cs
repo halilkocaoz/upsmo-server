@@ -8,13 +8,13 @@ namespace UpMo.Entities
         public Organization()
         {
             Monitors = new HashSet<Monitor>();
-            Managers = new HashSet<OrganizationManager>();
+            Managers = new HashSet<Manager>();
         }
         
         public string Name { get; set; }
         public int CreatorUserID { get; set; }
         
         public virtual ICollection<Monitor> Monitors { get; set; }
-        public virtual ICollection<OrganizationManager> Managers { get; set; }
+        public virtual ICollection<Manager> Managers { get; set; }
     }
 }

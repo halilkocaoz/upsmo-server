@@ -9,7 +9,7 @@ namespace UpMo.Data
         public UpMoContext(DbContextOptions options) : base(options) { }
 
         public DbSet<Organization> Organizations { get; set; }
-        public DbSet<OrganizationManager> OrganizationManagers { get; set; }
+        public DbSet<Manager> Managers { get; set; }
         public DbSet<Monitor> Monitors { get; set; }
         public DbSet<PostForm> PostForms { get; set; }
 
@@ -27,17 +27,17 @@ namespace UpMo.Data
                 entity.HasOne<AppUser>().WithMany().HasForeignKey(organization => organization.CreatorUserID);
             });
 
-            modelBuilder.Entity<OrganizationManager>(entity =>
+            modelBuilder.Entity<Manager>(entity =>
             {
                 entity.HasQueryFilter(x => !x.DeletedAt.HasValue);
 
-                entity.HasOne(organizationManager => organizationManager.Organization)
+                entity.HasOne(manager => manager.Organization)
                 .WithMany(organization => organization.Managers)
-                .HasForeignKey(organizationManager => organizationManager.OrganizationID);
+                .HasForeignKey(manager => manager.OrganizationID);
 
-                entity.HasOne(organizationManager => organizationManager.User)
+                entity.HasOne(manager => manager.User)
                 .WithMany()
-                .HasForeignKey(organizationManager => organizationManager.UserID);
+                .HasForeignKey(manager => manager.UserID);
             });
 
             modelBuilder.Entity<Monitor>(entity =>

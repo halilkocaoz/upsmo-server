@@ -6,7 +6,7 @@ using UpMo.WebAPI.Controllers.Base;
 
 namespace UpMo.WebAPI.Controllers
 {
-    [Route("[controller]")]
+    [Route("auth")]
     public class AuthController : BaseController
     {
         private readonly IUserService _userService;
@@ -14,11 +14,11 @@ namespace UpMo.WebAPI.Controllers
         public AuthController(IUserService userService) =>
             _userService = userService;
 
-        [HttpPost("SignIn")]
+        [HttpPost("signin")]
         public async Task<IActionResult> SignIn(SignInRequest request) =>
             ApiResponse(await _userService.SignInWithPasswordAsync(request));
 
-        [HttpPost("SignUp")]
+        [HttpPost("signup")]
         public async Task<IActionResult> SignUp(SignUpRequest request) =>
             ApiResponse(await _userService.SignUpWithPasswordAsync(request));
     }

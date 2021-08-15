@@ -25,7 +25,7 @@ namespace UpMo.Services.Concrete
         {
             var organization = _mapper.Map<Organization>(request);
 
-            var organizationManager = new OrganizationManager
+            var Manager = new Manager
             {
                 ID = System.Guid.NewGuid(),
                 OrganizationID = organization.ID,
@@ -37,7 +37,7 @@ namespace UpMo.Services.Concrete
             using (var transaction = await _context.Database.BeginTransactionAsync())
             {
                 await _context.AddAsync(organization);
-                await _context.AddAsync(organizationManager);
+                await _context.AddAsync(Manager);
                 await _context.SaveChangesAsync();
 
                 await transaction.CommitAsync();

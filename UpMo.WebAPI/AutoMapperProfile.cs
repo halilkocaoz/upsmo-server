@@ -20,14 +20,17 @@ namespace UpMo.WebAPI
             CreateMap<OrganizationCreateRequest, Organization>();
             CreateMap<OrganizationUpdateRequest, Organization>();
 
-            CreateMap<ManagerCreateRequest, OrganizationManager>();
-            CreateMap<ManagerUpdateRequest, OrganizationManager>();
+            CreateMap<ManagerCreateRequest, Manager>();
+            CreateMap<ManagerUpdateRequest, Manager>();
 
             CreateMap<MonitorCreateRequest, Monitor>().ForMember(monitor => monitor.PostForms, opts =>
             {
                 opts.Condition(monitorCreateRequet => monitorCreateRequet.Method == MonitorMethodType.POST);
             });
-            CreateMap<MonitorUpdateRequest, Monitor>();
+            CreateMap<MonitorUpdateRequest, Monitor>().ForMember(monitor => monitor.PostForms, opts =>
+            {
+                opts.Condition(monitorCreateRequet => monitorCreateRequet.Method == MonitorMethodType.POST);
+            });;
 
             CreateMap<PostFormCreateRequest, PostForm>();
             CreateMap<PostFormUpdateRequest, PostForm>();
@@ -35,8 +38,10 @@ namespace UpMo.WebAPI
 
             #region Entity > DTO
             CreateMap<Organization, OrganizationResponse>();
-            CreateMap<OrganizationManager, OrganizationManagerResponse>();
+            CreateMap<Manager, ManagerResponse>();
+
             CreateMap<AppUser, AppUserResponse>();
+            
             CreateMap<Monitor, MonitorResponse>();
             CreateMap<PostForm, PostFormResponse>();
             #endregion

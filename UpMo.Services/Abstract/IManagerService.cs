@@ -5,7 +5,7 @@ using UpMo.Common.Response;
 
 namespace UpMo.Services.Abstract
 {
-    public interface IOrganizationManagerService
+    public interface IManagerService
     {
         /// <summary>
         /// Creates manager for organization.

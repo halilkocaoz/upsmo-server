@@ -22,7 +22,7 @@ namespace UpMo.Data.Extensions
         /// </summary>
         /// <param name="org">Instance</param>
         /// <param name="authenticatedUserID">An value to compare <see cref="Organization.CreatorUserID"/></param>
-        /// <returns>true if given value has the same value as given <see cref="Organization.CreatorUserID"/> or same <see cref="OrganizationManager.UserID"/> as Admin; otherwise, false</returns>
+        /// <returns>true if given value has the same value as given <see cref="Organization.CreatorUserID"/> or same <see cref="Manager.UserID"/> as Admin; otherwise, false</returns>
         /// <exception cref="ArgumentNullException"><see cref="Organization.Managers"/></exception>
         public static bool CheckCreatorOrAdmin(this Organization org, int authenticatedUserID)
         {

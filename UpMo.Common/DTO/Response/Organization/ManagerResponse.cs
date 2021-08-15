@@ -2,7 +2,7 @@ using System;
 
 namespace UpMo.Common.DTO.Response.Organization
 {
-    public class OrganizationManagerResponse
+    public class ManagerResponse
     {
         public Guid ID { get; set; }
         public bool Admin { get; set; }
