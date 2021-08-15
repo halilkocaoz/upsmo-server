@@ -27,7 +27,7 @@ namespace UpMo.Services.Abstract
         /// Gets organizations for authenticated user by id of user.
         /// </summary>
         /// <param name="authenticatedUserID"></param>
-        /// <returns><see cref="ApiResponse"/> with <see cref="ResponseStatus.OK"/> and a list of organizations</returns>
+        /// <returns><see cref="ApiResponse"/> with <see cref="ResponseStatus.OK"/></returns>
         Task<ApiResponse> GetOrganizationsByAuthenticatedUserIDAsync(int authenticatedUserID);
     }
 }

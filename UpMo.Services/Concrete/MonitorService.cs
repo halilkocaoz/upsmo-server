@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
@@ -56,6 +59,22 @@ namespace UpMo.Services.Concrete
             }
 
             return new ApiResponse(ResponseStatus.Forbid, ResponseMessage.Forbid);
+        }
+
+        public async Task<ApiResponse> GetMonitorsByOrganizationIDForAuthenticatedUser(Guid organizationID, int authenticatedUserID)
+        {
+            var monitorsForAuthenticatedUser = await _context.Monitors.Include(x=>x.PostFormData)
+                                                    .Include(x => x.Organization).ThenInclude(x => x.Managers)
+                                                    .AsSplitQuery()
+                                                    .Where(x => x.OrganizationID == organizationID
+                                                                && (
+                                                                    x.Organization.CreatorUserID == authenticatedUserID ||
+                                                                    x.Organization.Managers.Any(x => (x.Viewer || x.Admin) && x.UserID == authenticatedUserID)
+                                                                ))
+                                                    .ToListAsync();
+
+            object returnObject = new { monitors = _mapper.Map<List<MonitorResponse>>(monitorsForAuthenticatedUser) };
+            return new ApiResponse(ResponseStatus.OK, returnObject);
         }
     }
 }

@@ -13,8 +13,12 @@ namespace UpMo.WebAPI.Controllers
     {
         private readonly IMonitorService _monitorService;
 
-        public MonitorsController(IMonitorService monitorService)
-            => _monitorService = monitorService;
+        public MonitorsController(IMonitorService monitorService) => 
+            _monitorService = monitorService;
+
+        [HttpGet("Monitors")]
+        public async Task<IActionResult> GetMonitorsByOrganizationIDForAuthenticatedUserAsync([FromRoute] Guid organizationID) => 
+            ApiResponse(await _monitorService.GetMonitorsByOrganizationIDForAuthenticatedUser(organizationID, User.GetID()));
 
         [HttpPost("Monitors")]
         public async Task<IActionResult> CreateMonitorAsync([FromRoute] Guid organizationID, [FromBody] MonitorCreateRequest request)
