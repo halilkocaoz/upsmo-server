@@ -14,5 +14,7 @@ namespace UpMo.Common.DTO.Response.Monitor
         public MonitorCheckIntervalMs IntervalMs { get; set; }
 
         public List<PostFormResponse> PostForms { get; set; }
+        public List<HeaderResponse> Headers { get; set; }
+
     }
 }

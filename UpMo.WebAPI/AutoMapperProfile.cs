@@ -35,6 +35,7 @@ namespace UpMo.WebAPI
             });
 
             CreateMap<PostFormRequest, PostForm>();
+            CreateMap<HeaderRequest, Header>();
             #endregion
 
             #region Entity > DTO
@@ -45,6 +46,8 @@ namespace UpMo.WebAPI
 
             CreateMap<Monitor, MonitorResponse>();
             CreateMap<PostForm, PostFormResponse>();
+            CreateMap<Header, HeaderResponse>();
+
             #endregion
         }
     }
