@@ -21,6 +21,7 @@ namespace UpMo.Common.Response
 
         #region Bad Request
         public static readonly string AlreadyManager = "Given user is already manager at the given organization.";
+        public static readonly string MonitorNotPost = "Monitor method is not POST.";
         #endregion
     }
 }
