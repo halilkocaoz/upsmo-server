@@ -29,7 +29,7 @@ namespace UpMo.WebAPI.Controllers
         }
 
         [HttpPut("{postDataID}")]
-        public async Task<IActionResult> CreateAsync(
+        public async Task<IActionResult> UpdateAsync(
             Guid organizationID,
             Guid monitorID,
             Guid postDataID,
@@ -41,5 +41,12 @@ namespace UpMo.WebAPI.Controllers
             request.AuthenticatedUserID = User.GetID();
             return ApiResponse(await _postDataService.UpdateByRequestAsync(request));
         }
+
+        [HttpDelete("{postDataID}")]
+        public async Task<IActionResult> DeleteAsync(
+            Guid organizationID,
+            Guid monitorID,
+            Guid postDataID) => 
+            ApiResponse(await _postDataService.SoftDeleteByIDsAsync(postDataID, monitorID, organizationID, User.GetID()));
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
@@ -70,6 +71,30 @@ namespace UpMo.Services.Concrete
                 toBeUpdatedPostData = _mapper.Map(request, toBeUpdatedPostData);
                 await _context.SaveChangesAsync();
                 return new ApiResponse(ResponseStatus.OK, new { postData = _mapper.Map<PostFormDataResponse>(toBeUpdatedPostData) });
+            }
+
+            return new ApiResponse(ResponseStatus.Forbid, ResponseMessage.Forbid);
+        }
+
+        public async Task<ApiResponse> SoftDeleteByIDsAsync(Guid postDataID, Guid monitorID, Guid organizationID, int authenticatedUserID)
+        {
+            var toBeSoftDeletedPostData = await _context.PostFormData.Include(x => x.Monitor)
+                                                                 .ThenInclude(x => x.Organization)
+                                                                 .ThenInclude(x => x.Managers)
+                                                                 .SingleOrDefaultAsync(x =>
+                                                                    x.ID == postDataID &&
+                                                                    x.MonitorID == monitorID &&
+                                                                    x.Monitor.OrganizationID == organizationID);
+            if (toBeSoftDeletedPostData is null)
+            {
+                return new ApiResponse(ResponseStatus.NotFound, ResponseMessage.NotFoundMonitorPostData);
+            }
+
+            if (toBeSoftDeletedPostData.Monitor.Organization.CheckCreatorOrAdmin(authenticatedUserID))
+            {
+                toBeSoftDeletedPostData.DeletedAt = DateTime.Now;
+                await _context.SaveChangesAsync();
+                return new ApiResponse(ResponseStatus.NoContent);
             }
 
             return new ApiResponse(ResponseStatus.Forbid, ResponseMessage.Forbid);
