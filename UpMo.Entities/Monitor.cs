@@ -10,7 +10,7 @@ namespace UpMo.Entities
         {
             PostForms = new HashSet<PostForm>();
         }
-        
+
         public Guid OrganizationID { get; set; }
         public string Name { get; set; }
 
@@ -18,9 +18,9 @@ namespace UpMo.Entities
         /// Domain or IP Address
         /// </summary>
         public string Host { get; set; }
-        
+
         public MonitorMethodType Method { get; set; }
-        
+
         public MonitorCheckIntervalMs IntervalMs { get; set; }
 
 
@@ -28,6 +28,11 @@ namespace UpMo.Entities
         /// POST form body values
         /// </summary>
         public virtual ICollection<PostForm> PostForms { get; set; }
+
+        /// <summary>
+        /// Header values
+        /// </summary>
+        public virtual ICollection<Header> Headers { get; set; }
 
         public virtual Organization Organization { get; set; }
     }
