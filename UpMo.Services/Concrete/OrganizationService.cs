@@ -78,7 +78,7 @@ namespace UpMo.Services.Concrete
             {
                 return new ApiResponse(ResponseStatus.Forbid, ResponseMessage.Forbid);
             }
-            
+
             toBeSofDeletedOrganization.DeletedAt = DateTime.Now;
             await _context.SaveChangesAsync();
             return new ApiResponse(ResponseStatus.NoContent);
@@ -89,6 +89,7 @@ namespace UpMo.Services.Concrete
             var organizationsForAuthenticatedUser = await _context.Organizations
                                                     .Include(x => x.Managers)
                                                     .Include(x => x.Monitors).ThenInclude(x => x.PostForms)
+                                                    .Include(x => x.Monitors).ThenInclude(x => x.Headers)
                                                     .AsSplitQuery().Where(x =>
                                                                    x.FounderUserID == authenticatedUserID
                                                                 || x.Managers.Any(x => x.Viewer

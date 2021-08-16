@@ -52,6 +52,7 @@ namespace UpMo.WebAPI.Extensions
             services.AddTransient<IManagerService, ManagerService>();
             services.AddTransient<IMonitorService, MonitorService>();
             services.AddTransient<IPostFormService, PostFormService>();
+            services.AddTransient<IHeaderService, HeaderService>();
 
 
 
