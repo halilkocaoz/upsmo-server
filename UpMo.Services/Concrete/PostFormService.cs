@@ -56,8 +56,8 @@ namespace UpMo.Services.Concrete
                                     .ThenInclude(x => x.Organization)
                                     .ThenInclude(x => x.Managers)
                                     .SingleOrDefaultAsync(x => x.ID == request.ID
-                                    && x.MonitorID == request.MonitorID
-                                    && x.Monitor.OrganizationID == request.OrganizationID);
+                                                               && x.MonitorID == request.MonitorID
+                                                               && x.Monitor.OrganizationID == request.OrganizationID);
 
         public async Task<ApiResponse> UpdateByRequestAsync(PostFormRequest request)
         {

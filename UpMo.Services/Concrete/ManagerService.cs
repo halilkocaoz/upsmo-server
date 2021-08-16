@@ -23,82 +23,82 @@ namespace UpMo.Services.Concrete
 
         public async Task<ApiResponse> CreateByRequestAsync(ManagerCreateRequest request)
         {
-            var organization = await _context.Organizations.SingleOrDefaultAsync(x => x.ID == request.OrganizationID);
-
-            if (organization is null)
+            var toBeRelatedOrganization = await _context.Organizations.SingleOrDefaultAsync(x => x.ID == request.OrganizationID);
+            if (toBeRelatedOrganization is null)
             {
                 return new ApiResponse(ResponseStatus.NotFound, ResponseMessage.NotFoundOrganization);
             }
 
-            if (organization.CheckFounder(request.AuthenticatedUserID))
+            bool hasUserPermissionToCreateManagerForOrganization = toBeRelatedOrganization.CheckFounder(request.AuthenticatedUserID);
+            if (hasUserPermissionToCreateManagerForOrganization is false)
             {
-                var willBeManagerUser = await _context.Users.FirstOrDefaultAsync(x => x.UserName == request.Identifier
-                                                                                    || x.Email == request.Identifier);
-                if (willBeManagerUser is null)
-                {
-                    return new ApiResponse(ResponseStatus.NotFound, ResponseMessage.NotFoundUser);
-                }
-
-                bool userAlreadyManagerAtGivenOrganization = await _context.Managers
-                     .AnyAsync(x => x.UserID == willBeManagerUser.Id && x.OrganizationID == organization.ID);
-
-                if (userAlreadyManagerAtGivenOrganization) // todo: take precautions too on database side
-                {
-                    return new ApiResponse(ResponseStatus.BadRequest, ResponseMessage.AlreadyManager);
-                }
-
-                var newManager = _mapper.Map<Manager>(request);
-                newManager.UserID = willBeManagerUser.Id;
-                await _context.AddAsync(newManager);
-                await _context.SaveChangesAsync();
-
-                return new ApiResponse(ResponseStatus.Created, new { Manager = _mapper.Map<ManagerResponse>(newManager) });
+                return new ApiResponse(ResponseStatus.Forbid, ResponseMessage.Forbid);
             }
 
-            return new ApiResponse(ResponseStatus.Forbid, ResponseMessage.Forbid);
+            var willBeManagerUser = await _context.Users.FirstOrDefaultAsync(x => x.UserName == request.Identifier
+                                                                                  || x.Email == request.Identifier);
+            if (willBeManagerUser is null)
+            {
+                return new ApiResponse(ResponseStatus.NotFound, ResponseMessage.NotFoundUser);
+            }
+
+            bool userAlreadyManagerAtGivenOrganization = await _context.Managers
+                 .AnyAsync(x => x.UserID == willBeManagerUser.Id && x.OrganizationID == toBeRelatedOrganization.ID);
+
+            if (userAlreadyManagerAtGivenOrganization is true) // todo: take precautions too on database side
+            {
+                return new ApiResponse(ResponseStatus.BadRequest, ResponseMessage.AlreadyManager);
+            }
+
+            var newManager = _mapper.Map<Manager>(request);
+            newManager.UserID = willBeManagerUser.Id;
+            await _context.AddAsync(newManager);
+            await _context.SaveChangesAsync();
+
+            return new ApiResponse(ResponseStatus.Created, new { Manager = _mapper.Map<ManagerResponse>(newManager) });
         }
+
+        private async Task<Manager> getManagerByIDsAsync(Guid managerID, Guid organizationID) =>
+        await _context.Managers.Include(x => x.Organization)
+                               .SingleOrDefaultAsync(x => x.ID == managerID
+                                                          && x.OrganizationID == organizationID);
 
         public async Task<ApiResponse> UpdateByRequestAsync(ManagerUpdateRequest request)
         {
-            var toBeUpdatedManager = await _context.Managers.Include(x => x.Organization)
-                                                                        .SingleOrDefaultAsync(x =>
-                                                                            x.ID == request.ID
-                                                                            && x.OrganizationID == request.OrganizationID);
-
+            var toBeUpdatedManager = await getManagerByIDsAsync(request.ID, request.OrganizationID);
             if (toBeUpdatedManager is null)
             {
                 return new ApiResponse(ResponseStatus.NotFound, ResponseMessage.NotFoundManager);
             }
 
-            if (toBeUpdatedManager.Organization.CheckFounder(request.AuthenticatedUserID))
+            bool hasUserPermissionToUpdate = toBeUpdatedManager.Organization.CheckFounder(request.AuthenticatedUserID);
+            if (hasUserPermissionToUpdate is false)
             {
-                toBeUpdatedManager = _mapper.Map(request, toBeUpdatedManager);
-                await _context.SaveChangesAsync();
-                return new ApiResponse(ResponseStatus.OK, new { Manager = _mapper.Map<ManagerResponse>(toBeUpdatedManager) });
+                return new ApiResponse(ResponseStatus.Forbid, ResponseMessage.Forbid);
             }
 
-            return new ApiResponse(ResponseStatus.Forbid, ResponseMessage.Forbid);
+            toBeUpdatedManager = _mapper.Map(request, toBeUpdatedManager);
+            await _context.SaveChangesAsync();
+            return new ApiResponse(ResponseStatus.OK, new { Manager = _mapper.Map<ManagerResponse>(toBeUpdatedManager) });
         }
 
         public async Task<ApiResponse> SoftDeleteByIDsAsync(Guid organizationID, Guid managerID, int authenticatedUserID)
         {
-            var toBeSoftDeletedManager = await _context.Managers.Include(x => x.Organization)
-                                                                            .SingleOrDefaultAsync(x =>
-                                                                                x.ID == managerID
-                                                                                && x.OrganizationID == organizationID);
+            var toBeSoftDeletedManager = await getManagerByIDsAsync(managerID, organizationID);
             if (toBeSoftDeletedManager is null)
             {
                 return new ApiResponse(ResponseStatus.NotFound, ResponseMessage.NotFoundManager);
             }
 
-            if (toBeSoftDeletedManager.Organization.CheckFounder(authenticatedUserID))
+            bool hasUserPermissionToSoftDelete = toBeSoftDeletedManager.Organization.CheckFounder(authenticatedUserID);
+            if (hasUserPermissionToSoftDelete is false)
             {
-                toBeSoftDeletedManager.DeletedAt = DateTime.Now;
-                await _context.SaveChangesAsync();
-                return new ApiResponse(ResponseStatus.NoContent);
+                return new ApiResponse(ResponseStatus.Forbid, ResponseMessage.Forbid);
             }
 
-            return new ApiResponse(ResponseStatus.Forbid, ResponseMessage.Forbid);
+            toBeSoftDeletedManager.DeletedAt = DateTime.Now;
+            await _context.SaveChangesAsync();
+            return new ApiResponse(ResponseStatus.NoContent);
         }
 
         public async Task<ApiResponse> GetManagersByOrganizationIDAndAuthenticatedUserID(Guid organizationID, int authenticatedUserID)
