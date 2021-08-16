@@ -45,14 +45,50 @@ namespace UpMo.Services.Concrete
             return new ApiResponse(ResponseStatus.Created, new { header = _mapper.Map<HeaderResponse>(newHeader) });
         }
 
-        public Task<ApiResponse> SoftDeleteByRequestAsync(HeaderRequest request)
+        private async Task<Header> getHeaderByRequestAsync(HeaderRequest request) =>
+            await _context.Headers.Include(x => x.Monitor)
+                                    .ThenInclude(x => x.Organization)
+                                    .ThenInclude(x => x.Managers)
+                                    .SingleOrDefaultAsync(x => x.ID == request.ID
+                                                               && x.MonitorID == request.MonitorID
+                                                               && x.Monitor.OrganizationID == request.OrganizationID);
+
+        public async Task<ApiResponse> UpdateByRequestAsync(HeaderRequest request)
         {
-            throw new NotImplementedException();
+            var toBeUpdatedHeader = await getHeaderByRequestAsync(request);
+            if (toBeUpdatedHeader is null)
+            {
+                return new ApiResponse(ResponseStatus.NotFound, ResponseMessage.NotFoundMonitorHeader);
+            }
+
+            bool userHasPermissionToUpdate = toBeUpdatedHeader.Monitor.Organization.CheckFounderOrAdmin(request.AuthenticatedUserID);
+            if (userHasPermissionToUpdate is false)
+            {
+                return new ApiResponse(ResponseStatus.Forbid, ResponseMessage.Forbid);
+            }
+
+            toBeUpdatedHeader = _mapper.Map(request, toBeUpdatedHeader);
+            await _context.SaveChangesAsync();
+            return new ApiResponse(ResponseStatus.OK, new { postForm = _mapper.Map<HeaderResponse>(toBeUpdatedHeader) });
         }
 
-        public Task<ApiResponse> UpdateByRequestAsync(HeaderRequest request)
+        public async Task<ApiResponse> SoftDeleteByRequestAsync(HeaderRequest request)
         {
-            throw new NotImplementedException();
+            var toBeSoftDeletedHeader = await getHeaderByRequestAsync(request);
+            if (toBeSoftDeletedHeader is null)
+            {
+                return new ApiResponse(ResponseStatus.NotFound, ResponseMessage.NotFoundMonitorHeader);
+            }
+
+            bool userHasPermissionToSoftDelete = toBeSoftDeletedHeader.Monitor.Organization.CheckFounderOrAdmin(request.AuthenticatedUserID);
+            if (userHasPermissionToSoftDelete is false)
+            {
+                return new ApiResponse(ResponseStatus.Forbid, ResponseMessage.Forbid);
+            }
+
+            toBeSoftDeletedHeader.DeletedAt = DateTime.Now;
+            await _context.SaveChangesAsync();
+            return new ApiResponse(ResponseStatus.NoContent);
         }
     }
 }

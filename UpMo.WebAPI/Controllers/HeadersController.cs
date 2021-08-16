@@ -27,5 +27,32 @@ namespace UpMo.WebAPI.Controllers
             request.AuthenticatedUserID = User.GetID();
             return ApiResponse(await _headerService.CreateByRequestAsync(request));
         }
+
+        [HttpPut("{headerID}")]
+        public async Task<IActionResult> UpdateAsync(
+            Guid organizationID,
+            Guid monitorID,
+            Guid headerID,
+            HeaderRequest request)
+        {
+            request.OrganizationID = organizationID;
+            request.MonitorID = monitorID;
+            request.ID = headerID;
+            request.AuthenticatedUserID = User.GetID();
+            return ApiResponse(await _headerService.UpdateByRequestAsync(request));
+        }
+
+        [HttpDelete("{headerID}")]
+        public async Task<IActionResult> DeleteAsync(
+            Guid organizationID,
+            Guid monitorID,
+            Guid headerID) =>
+            ApiResponse(await _headerService.SoftDeleteByRequestAsync(new HeaderRequest
+            {
+                OrganizationID = organizationID,
+                MonitorID = monitorID,
+                ID = headerID,
+                AuthenticatedUserID = User.GetID()
+            }));
     }
 }

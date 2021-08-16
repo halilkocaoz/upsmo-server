@@ -19,6 +19,7 @@ namespace UpMo.Common.Response
 
         public static readonly string NotFoundMonitor = $"{notFoundStarting} Monitor";
         public static readonly string NotFoundMonitorPostForm = $"{notFoundStarting} Monitor Post Form";
+        public static readonly string NotFoundMonitorHeader = $"{notFoundStarting} Monitor Header";
 
         public static readonly string NotFoundUser = $"{notFoundStarting} User";
         #endregion

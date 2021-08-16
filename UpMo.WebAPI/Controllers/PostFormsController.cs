@@ -47,13 +47,12 @@ namespace UpMo.WebAPI.Controllers
             Guid organizationID,
             Guid monitorID,
             Guid postFormID) =>
-            ApiResponse(await _postFormService.SoftDeleteByRequestAsync(
-                new PostFormRequest
-                {
-                    ID = postFormID,
-                    OrganizationID = organizationID,
-                    MonitorID = monitorID,
-                    AuthenticatedUserID = User.GetID()
-                }));
+            ApiResponse(await _postFormService.SoftDeleteByRequestAsync(new PostFormRequest
+            {
+                ID = postFormID,
+                OrganizationID = organizationID,
+                MonitorID = monitorID,
+                AuthenticatedUserID = User.GetID()
+            }));
     }
 }
