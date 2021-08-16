@@ -54,15 +54,15 @@ namespace UpMo.Services.Concrete
                 return new ApiResponse(ResponseStatus.NotFound, ResponseMessage.NotFoundOrganization);
             }
 
-            if (toBeUpdatedOrganization.CheckCreatorOrAdmin(request.AuthenticatedUserID))
+            bool userHasPermissionToUpdate = toBeUpdatedOrganization.CheckCreatorOrAdmin(request.AuthenticatedUserID);
+            if (userHasPermissionToUpdate is false)
             {
-                toBeUpdatedOrganization.Name = request.Name;
-                await _context.SaveChangesAsync();
-
-                return new ApiResponse(ResponseStatus.OK, new { organization = _mapper.Map<OrganizationResponse>(toBeUpdatedOrganization) });
+                return new ApiResponse(ResponseStatus.Forbid, ResponseMessage.Forbid);
             }
 
-            return new ApiResponse(ResponseStatus.Forbid, ResponseMessage.Forbid);
+            toBeUpdatedOrganization.Name = request.Name;
+            await _context.SaveChangesAsync();
+            return new ApiResponse(ResponseStatus.OK, new { organization = _mapper.Map<OrganizationResponse>(toBeUpdatedOrganization) });
         }
 
         public async Task<ApiResponse> SoftDeleteByIDAsync(Guid organizationID, int authenticatedUserID)
@@ -73,14 +73,15 @@ namespace UpMo.Services.Concrete
                 return new ApiResponse(ResponseStatus.NotFound, ResponseMessage.NotFoundOrganization);
             }
 
-            if (toBeSofDeletedOrganization.CheckCreator(authenticatedUserID))
+            bool userHasPermissionToSoftDelete = toBeSofDeletedOrganization.CheckCreator(authenticatedUserID);
+            if (userHasPermissionToSoftDelete is false)
             {
-                toBeSofDeletedOrganization.DeletedAt = DateTime.Now;
-                await _context.SaveChangesAsync();
-                return new ApiResponse(ResponseStatus.NoContent);
+                return new ApiResponse(ResponseStatus.Forbid, ResponseMessage.Forbid);
             }
-
-            return new ApiResponse(ResponseStatus.Forbid, ResponseMessage.Forbid);
+            
+            toBeSofDeletedOrganization.DeletedAt = DateTime.Now;
+            await _context.SaveChangesAsync();
+            return new ApiResponse(ResponseStatus.NoContent);
         }
 
         public async Task<ApiResponse> GetOrganizationsByAuthenticatedUserIDAsync(int authenticatedUserID)
@@ -88,9 +89,10 @@ namespace UpMo.Services.Concrete
             var organizationsForAuthenticatedUser = await _context.Organizations
                                                     .Include(x => x.Managers)
                                                     .Include(x => x.Monitors).ThenInclude(x => x.PostForms)
-                                                    .AsSplitQuery()
-                                                    .Where(x => x.CreatorUserID == authenticatedUserID
-                                                                || x.Managers.Any(x => x.Viewer && x.UserID == authenticatedUserID))
+                                                    .AsSplitQuery().Where(x =>
+                                                                   x.CreatorUserID == authenticatedUserID
+                                                                || x.Managers.Any(x => x.Viewer
+                                                                && x.UserID == authenticatedUserID))
                                                     .ToListAsync();
 
             object returnObject = new { organizations = _mapper.Map<List<OrganizationResponse>>(organizationsForAuthenticatedUser) };
