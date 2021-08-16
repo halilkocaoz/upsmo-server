@@ -13,6 +13,7 @@ namespace UpMo.Entities
         public T ID { get; set; }
 
         public DateTime CreatedAt { get; private set; }
+        //todo log who deleted the entity
         public DateTime? DeletedAt { get; set; }
     }
 }

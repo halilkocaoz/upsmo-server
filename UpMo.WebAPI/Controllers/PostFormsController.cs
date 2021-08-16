@@ -46,7 +46,14 @@ namespace UpMo.WebAPI.Controllers
         public async Task<IActionResult> DeleteAsync(
             Guid organizationID,
             Guid monitorID,
-            Guid postFormID) => 
-            ApiResponse(await _postFormService.SoftDeleteByIDsAsync(postFormID, monitorID, organizationID, User.GetID()));
+            Guid postFormID) =>
+            ApiResponse(await _postFormService.SoftDeleteByRequestAsync(
+                new PostFormRequest
+                {
+                    ID = postFormID,
+                    OrganizationID = organizationID,
+                    MonitorID = monitorID,
+                    AuthenticatedUserID = User.GetID()
+                }));
     }
 }

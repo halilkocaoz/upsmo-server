@@ -7,10 +7,11 @@ namespace UpMo.Services.Abstract
 {
     public interface IPostFormService
     {
+        // todo summaries
         Task<ApiResponse> CreateByRequestAsync(PostFormRequest request);
 
         Task<ApiResponse> UpdateByRequestAsync(PostFormRequest request);
 
-        Task<ApiResponse> SoftDeleteByIDsAsync(Guid postFormID, Guid monitorID, Guid organizationID, int authenticatedUserID);
+        Task<ApiResponse> SoftDeleteByRequestAsync(PostFormRequest request);
     }
 }
