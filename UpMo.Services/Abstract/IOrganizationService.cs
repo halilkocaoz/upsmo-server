@@ -11,18 +11,31 @@ namespace UpMo.Services.Abstract
         /// Creates organization for authenticated user
         /// </summary>
         /// <param name="request"></param>
-        /// <returns><see cref="ApiResponse"/> with <see cref="ResponseStatus.Created"/> and created organization object.</returns>
+        /// <returns>
+        /// <see cref="ApiResponse"/> with <see cref="ResponseStatus.Created"/> and created object
+        /// </returns>
         Task<ApiResponse> CreateByRequestAsync(OrganizationRequest request);
 
         /// <summary>
-        /// Updates organization by ID, if <see cref="OrganizationRequest.AuthenticatedUserID"/> equals any admin or creator user id for the Organization.
-        /// <para>Authenticated user must be creator or admin of the Organization</para>
+        /// Updates
+        /// <para>Authenticated user must be founder or admin of the related organization</para> 
         /// </summary>
-        /// <param name="toBeUpdatedOrganizationID"></param>
         /// <param name="request"></param>
-        /// <returns><see cref="ApiResponse"/> with <see cref="ResponseStatus.OK"/> and updated organization object or <see cref="ResponseStatus.Forbid"/>.</returns>
+        /// <returns>
+        /// <see cref="ApiResponse"/> with <para> <see cref="ResponseStatus.OK"/> and updated object,</para> 
+        /// <para><see cref="ResponseStatus.NotFound"/> or <see cref="ResponseStatus.Forbid"/> </para>
+        /// </returns>
         Task<ApiResponse> UpdateByRequestAsync(OrganizationRequest request);
 
+        /// <summary>
+        /// Soft deletes
+        /// <para>Authenticated user must be founder of the related organization</para> 
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns>
+        /// <see cref="ApiResponse"/> with <para> <see cref="ResponseStatus.NoContent"/>,</para> 
+        /// <para><see cref="ResponseStatus.NotFound"/> or <see cref="ResponseStatus.Forbid"/> </para>
+        /// </returns>
         Task<ApiResponse> SoftDeleteByIDAsync(Guid organizationID, int authenticatedUserID);
 
         /// <summary>

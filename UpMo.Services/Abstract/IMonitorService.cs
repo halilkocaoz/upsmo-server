@@ -8,26 +8,32 @@ namespace UpMo.Services.Abstract
     public interface IMonitorService
     {
         /// <summary>
-        /// Creates monitor for Organization
-        /// <para>Authenticated user must be creator or admin of the Organization</para>
+        /// Creates monitor for organization
+        /// <para>Authenticated user must be founder or admin of the related organization</para>
         /// </summary>
         /// <param name="request"></param>
-        /// <returns><see cref="ApiResponse"/> with <see cref="ResponseStatus.Created"/> and created monitor object, <see cref="ResponseStatus.NotFound"/> or <see cref="ResponseStatus.Forbid"/></returns>
+        /// <returns>
+        /// <see cref="ApiResponse"/> with <para> <see cref="ResponseStatus.Created"/> and created object,</para> 
+        /// <para><see cref="ResponseStatus.NotFound"/> or <see cref="ResponseStatus.Forbid"/> </para>
+        /// </returns>
         Task<ApiResponse> CreateByRequestAsync(MonitorCreateRequest request);
 
         /// <summary>
-        /// Updates monitor for Organization
-        /// <para>Authenticated user must be creator or admin of the Organization</para>
+        /// Updates
+        /// <para>Authenticated user must be founder or admin of the related organization</para> 
         /// </summary>
         /// <param name="request"></param>
-        /// <returns><see cref="ApiResponse"/> with <see cref="ResponseStatus.OK"/> and updated monitor object, <see cref="ResponseStatus.NotFound"/> or <see cref="ResponseStatus.Forbid"/></returns>
+        /// <returns>
+        /// <see cref="ApiResponse"/> with <para> <see cref="ResponseStatus.OK"/> and updated object,</para> 
+        /// <para><see cref="ResponseStatus.NotFound"/> or <see cref="ResponseStatus.Forbid"/> </para>
+        /// </returns>
         Task<ApiResponse> UpdateByRequestAsync(MonitorUpdateRequest request);
 
         Task<ApiResponse> SoftDeleteByIDsAsync(Guid organizationID, Guid monitorID, int authenticatedUserID);
 
         /// <summary>
-        /// Gets monitors by Organization ID
-        /// <para>Authenticated user must be creator, admin or viewer of the Organization</para>
+        /// Gets monitors
+        /// <para>Authenticated user must be founder, admin or viewer of the related organization</para>
         /// </summary>
         /// <param name="organizationID"></param>
         /// <param name="authenticatedUserID"></param>
