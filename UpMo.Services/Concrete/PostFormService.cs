@@ -33,7 +33,7 @@ namespace UpMo.Services.Concrete
                 return new ApiResponse(ResponseStatus.NotFound, ResponseMessage.NotFoundMonitor);
             }
 
-            bool userHasPermissionToCreatePostFormForMonitor = toBeRelatedMonitor.Organization.CheckCreatorOrAdmin(request.AuthenticatedUserID);
+            bool userHasPermissionToCreatePostFormForMonitor = toBeRelatedMonitor.Organization.CheckFounderOrAdmin(request.AuthenticatedUserID);
             if (userHasPermissionToCreatePostFormForMonitor is false)
             {
                 return new ApiResponse(ResponseStatus.Forbid, ResponseMessage.Forbid);
@@ -67,7 +67,7 @@ namespace UpMo.Services.Concrete
                 return new ApiResponse(ResponseStatus.NotFound, ResponseMessage.NotFoundMonitorPostForm);
             }
 
-            bool userHasPermissionToUpdate = toBeUpdatedPostForm.Monitor.Organization.CheckCreatorOrAdmin(request.AuthenticatedUserID);
+            bool userHasPermissionToUpdate = toBeUpdatedPostForm.Monitor.Organization.CheckFounderOrAdmin(request.AuthenticatedUserID);
             if (userHasPermissionToUpdate is false)
             {
                 return new ApiResponse(ResponseStatus.Forbid, ResponseMessage.Forbid);
@@ -86,7 +86,7 @@ namespace UpMo.Services.Concrete
                 return new ApiResponse(ResponseStatus.NotFound, ResponseMessage.NotFoundMonitorPostForm);
             }
 
-            bool userHasPermissionToSoftDelete = toBeSoftDeletedPostForm.Monitor.Organization.CheckCreatorOrAdmin(request.AuthenticatedUserID);
+            bool userHasPermissionToSoftDelete = toBeSoftDeletedPostForm.Monitor.Organization.CheckFounderOrAdmin(request.AuthenticatedUserID);
             if (userHasPermissionToSoftDelete is false)
             {
                 return new ApiResponse(ResponseStatus.Forbid, ResponseMessage.Forbid);

@@ -27,7 +27,7 @@ namespace UpMo.Services.Concrete
 
             var manager = new Manager
             {
-                UserID = organization.CreatorUserID,
+                UserID = organization.FounderUserID,
                 Admin = true,
                 Viewer = true
             };
@@ -54,7 +54,7 @@ namespace UpMo.Services.Concrete
                 return new ApiResponse(ResponseStatus.NotFound, ResponseMessage.NotFoundOrganization);
             }
 
-            bool userHasPermissionToUpdate = toBeUpdatedOrganization.CheckCreatorOrAdmin(request.AuthenticatedUserID);
+            bool userHasPermissionToUpdate = toBeUpdatedOrganization.CheckFounderOrAdmin(request.AuthenticatedUserID);
             if (userHasPermissionToUpdate is false)
             {
                 return new ApiResponse(ResponseStatus.Forbid, ResponseMessage.Forbid);
@@ -73,7 +73,7 @@ namespace UpMo.Services.Concrete
                 return new ApiResponse(ResponseStatus.NotFound, ResponseMessage.NotFoundOrganization);
             }
 
-            bool userHasPermissionToSoftDelete = toBeSofDeletedOrganization.CheckCreator(authenticatedUserID);
+            bool userHasPermissionToSoftDelete = toBeSofDeletedOrganization.CheckFounder(authenticatedUserID);
             if (userHasPermissionToSoftDelete is false)
             {
                 return new ApiResponse(ResponseStatus.Forbid, ResponseMessage.Forbid);
@@ -90,7 +90,7 @@ namespace UpMo.Services.Concrete
                                                     .Include(x => x.Managers)
                                                     .Include(x => x.Monitors).ThenInclude(x => x.PostForms)
                                                     .AsSplitQuery().Where(x =>
-                                                                   x.CreatorUserID == authenticatedUserID
+                                                                   x.FounderUserID == authenticatedUserID
                                                                 || x.Managers.Any(x => x.Viewer
                                                                 && x.UserID == authenticatedUserID))
                                                     .ToListAsync();

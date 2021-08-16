@@ -12,7 +12,7 @@ namespace UpMo.Entities
         }
         
         public string Name { get; set; }
-        public int CreatorUserID { get; set; }
+        public int FounderUserID { get; set; }
         
         public virtual ICollection<Monitor> Monitors { get; set; }
         public virtual ICollection<Manager> Managers { get; set; }

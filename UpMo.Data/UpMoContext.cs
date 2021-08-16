@@ -26,7 +26,7 @@ namespace UpMo.Data
             {
                 entity.HasQueryFilter(x => !x.DeletedAt.HasValue);
 
-                entity.HasOne<AppUser>().WithMany().HasForeignKey(organization => organization.CreatorUserID);
+                entity.HasOne<AppUser>().WithMany().HasForeignKey(organization => organization.FounderUserID);
             });
 
             modelBuilder.Entity<Manager>(entity =>

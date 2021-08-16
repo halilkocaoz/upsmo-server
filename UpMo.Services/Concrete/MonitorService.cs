@@ -27,7 +27,7 @@ namespace UpMo.Services.Concrete
                 return new ApiResponse(ResponseStatus.NotFound, ResponseMessage.NotFoundOrganization);
             }
 
-            bool userHasPermissionToCreateMonitorForOrganization = toBeRelatedOrganization.CheckCreatorOrAdmin(request.AuthenticatedUserID);
+            bool userHasPermissionToCreateMonitorForOrganization = toBeRelatedOrganization.CheckFounderOrAdmin(request.AuthenticatedUserID);
             if (userHasPermissionToCreateMonitorForOrganization is false)
             {
                 return new ApiResponse(ResponseStatus.Forbid, ResponseMessage.Forbid);
@@ -55,7 +55,7 @@ namespace UpMo.Services.Concrete
                 return new ApiResponse(ResponseStatus.NotFound, ResponseMessage.NotFoundMonitor);
             }
 
-            bool userHasPermissionToUpdate = toBeUpdatedMonitor.Organization.CheckCreatorOrAdmin(request.AuthenticatedUserID);
+            bool userHasPermissionToUpdate = toBeUpdatedMonitor.Organization.CheckFounderOrAdmin(request.AuthenticatedUserID);
             if (userHasPermissionToUpdate is false)
             {
                 return new ApiResponse(ResponseStatus.Forbid, ResponseMessage.Forbid);
@@ -75,7 +75,7 @@ namespace UpMo.Services.Concrete
                 return new ApiResponse(ResponseStatus.NotFound, ResponseMessage.NotFoundMonitor);
             }
 
-            bool userHasPermissionToSoftDelete = toBeSoftDeletedMonitor.Organization.CheckCreatorOrAdmin(authenticatedUserID);
+            bool userHasPermissionToSoftDelete = toBeSoftDeletedMonitor.Organization.CheckFounderOrAdmin(authenticatedUserID);
             if (userHasPermissionToSoftDelete is false)
             {
                 return new ApiResponse(ResponseStatus.Forbid, ResponseMessage.Forbid);
@@ -93,7 +93,7 @@ namespace UpMo.Services.Concrete
                                                     .Include(x => x.Organization).ThenInclude(x => x.Managers)
                                                     .AsSplitQuery()
                                                     .Where(x => x.OrganizationID == organizationID
-                                                                && (x.Organization.CreatorUserID == authenticatedUserID
+                                                                && (x.Organization.FounderUserID == authenticatedUserID
                                                                     || x.Organization.Managers.Any(x => (x.Viewer || x.Admin)
                                                                     && x.UserID == authenticatedUserID)
                                                                 )).ToListAsync();

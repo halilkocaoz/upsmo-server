@@ -30,7 +30,7 @@ namespace UpMo.Services.Concrete
                 return new ApiResponse(ResponseStatus.NotFound, ResponseMessage.NotFoundOrganization);
             }
 
-            if (organization.CheckCreator(request.AuthenticatedUserID))
+            if (organization.CheckFounder(request.AuthenticatedUserID))
             {
                 var willBeManagerUser = await _context.Users.FirstOrDefaultAsync(x => x.UserName == request.Identifier
                                                                                     || x.Email == request.Identifier);
@@ -70,7 +70,7 @@ namespace UpMo.Services.Concrete
                 return new ApiResponse(ResponseStatus.NotFound, ResponseMessage.NotFoundManager);
             }
 
-            if (toBeUpdatedManager.Organization.CheckCreator(request.AuthenticatedUserID))
+            if (toBeUpdatedManager.Organization.CheckFounder(request.AuthenticatedUserID))
             {
                 toBeUpdatedManager = _mapper.Map(request, toBeUpdatedManager);
                 await _context.SaveChangesAsync();
@@ -91,7 +91,7 @@ namespace UpMo.Services.Concrete
                 return new ApiResponse(ResponseStatus.NotFound, ResponseMessage.NotFoundManager);
             }
 
-            if (toBeSoftDeletedManager.Organization.CheckCreator(authenticatedUserID))
+            if (toBeSoftDeletedManager.Organization.CheckFounder(authenticatedUserID))
             {
                 toBeSoftDeletedManager.DeletedAt = DateTime.Now;
                 await _context.SaveChangesAsync();
@@ -107,7 +107,7 @@ namespace UpMo.Services.Concrete
                                                     .Include(x => x.Organization)
                                                     .Include(x => x.User)
                                                     .Where(x => x.OrganizationID == organizationID
-                                                                && x.Organization.CreatorUserID == authenticatedUserID)
+                                                                && x.Organization.FounderUserID == authenticatedUserID)
                                                     .ToListAsync();
 
             object returnObject = new { Managers = _mapper.Map<List<ManagerResponse>>(managersForAuthenticatedUser) };

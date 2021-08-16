@@ -17,7 +17,7 @@ namespace UpMo.WebAPI
             #region DTO > Entity
             CreateMap<SignUpRequest, AppUser>();
 
-            CreateMap<OrganizationRequest, Organization>().ForMember(organization => organization.CreatorUserID, opts =>
+            CreateMap<OrganizationRequest, Organization>().ForMember(organization => organization.FounderUserID, opts =>
             {
                 opts.MapFrom(x => x.AuthenticatedUserID);
             });
