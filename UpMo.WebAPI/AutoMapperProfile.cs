@@ -32,6 +32,10 @@ namespace UpMo.WebAPI
             }).ForMember(monitor => monitor.Region, opts =>
             {
                 opts.MapFrom(monitorCreateRequest => Enum.GetName(monitorCreateRequest.Region));
+            })
+            .ForMember(monitor => monitor.Method, opts =>
+            {
+                opts.MapFrom(monitorCreateRequest => Enum.GetName(monitorCreateRequest.Method));
             });
 
             CreateMap<MonitorUpdateRequest, Monitor>().ForMember(monitor => monitor.PostForms, opts =>
@@ -40,6 +44,10 @@ namespace UpMo.WebAPI
             }).ForMember(monitor => monitor.Region, opts =>
             {
                 opts.MapFrom(monitorUpdateRequest => Enum.GetName(monitorUpdateRequest.Region));
+            })
+            .ForMember(monitor => monitor.Method, opts =>
+            {
+                opts.MapFrom(monitorUpdateRequest => Enum.GetName(monitorUpdateRequest.Method));
             });
 
             CreateMap<PostFormRequest, PostForm>();

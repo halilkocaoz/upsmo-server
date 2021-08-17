@@ -39,7 +39,7 @@ namespace UpMo.Services.Concrete
                 return new ApiResponse(ResponseStatus.Forbid, ResponseMessage.Forbid);
             }
             
-            if (toBeRelatedMonitor.Method is not MonitorMethodType.POST)
+            if (toBeRelatedMonitor.Method.ToUpper() is not "POST")
             {
                 return new ApiResponse(ResponseStatus.BadRequest, ResponseMessage.MonitorNotPost);
             }

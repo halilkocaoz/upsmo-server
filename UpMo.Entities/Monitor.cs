@@ -13,17 +13,18 @@ namespace UpMo.Entities
         }
         public Guid OrganizationID { get; set; }
         public string Name { get; set; }
-
         /// <summary>
         /// Domain or IP Address
         /// </summary>
         public string Host { get; set; }
-        
         /// <summary>
         /// streaming topic name
         /// </summary>
         public string Region { get; set; }
-        public MonitorMethodType Method { get; set; }
+        /// <summary>
+        /// request method
+        /// </summary>
+        public string Method { get; set; }
         public string BasicAuthUser { get; set; }
         public string BasicAuthPassword { get; set; }
         public int IntervalMs { get; set; } = 1000 * 60;

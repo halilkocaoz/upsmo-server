@@ -3,7 +3,7 @@ mig:
 migrm:
 	cd ./UpMo.Data && dotnet ef migrations remove --startup-project ../UpMo.WebAPI/ && cd ..
 dbup:
-	cd ./UpMo.Data && dotnet ef --startup-project ../UpMo.WebAPI/ database update && cd ..
+	cd ./UpMo.Data && dotnet ef --startup-project ../UpMo.WebAPI/ database update && cd .. && make wr
 r:
 	cd ./UpMo.WebAPI/ && dotnet run && cd ..
 wr:
