@@ -7,6 +7,7 @@ using UpMo.Common.DTO.Response.Organization;
 using UpMo.Common.DTO.Response.Monitor;
 using UpMo.Common.Monitor;
 using UpMo.Entities;
+using System;
 
 namespace UpMo.WebAPI
 {
@@ -28,10 +29,17 @@ namespace UpMo.WebAPI
             CreateMap<MonitorCreateRequest, Monitor>().ForMember(monitor => monitor.PostForms, opts =>
             {
                 opts.Condition(monitorCreateRequet => monitorCreateRequet.Method == MonitorMethodType.POST);
+            }).ForMember(monitor => monitor.Region, opts =>
+            {
+                opts.MapFrom(monitorCreateRequest => Enum.GetName(monitorCreateRequest.Region));
             });
+
             CreateMap<MonitorUpdateRequest, Monitor>().ForMember(monitor => monitor.PostForms, opts =>
             {
-                opts.Condition(monitorCreateRequet => monitorCreateRequet.Method == MonitorMethodType.POST);
+                opts.Condition(monitorUpdateRequest => monitorUpdateRequest.Method == MonitorMethodType.POST);
+            }).ForMember(monitor => monitor.Region, opts =>
+            {
+                opts.MapFrom(monitorUpdateRequest => Enum.GetName(monitorUpdateRequest.Region));
             });
 
             CreateMap<PostFormRequest, PostForm>();

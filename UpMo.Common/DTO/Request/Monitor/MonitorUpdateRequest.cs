@@ -1,4 +1,4 @@
 namespace UpMo.Common.DTO.Request.Monitor
 {
-    public class MonitorUpdateRequest : BaseMonitor { }
+    public class MonitorUpdateRequest : BaseRequestMonitor { }
 }
