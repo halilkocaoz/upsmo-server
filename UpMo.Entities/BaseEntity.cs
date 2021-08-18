@@ -6,7 +6,7 @@ namespace UpMo.Entities
     {
         protected BaseEntity()
         {
-            CreatedAt = DateTime.Now;
+            CreatedAt = DateTime.UtcNow;
         }
 
         // Uppercase because of Golang lint :)

@@ -67,7 +67,7 @@ namespace UpMo.Services.Concrete
 
         public async Task<ApiResponse> SoftDeleteByIDAsync(Guid organizationID, int authenticatedUserID)
         {
-            var toBeSofDeletedOrganization = await _context.Organizations.SingleOrDefaultAsync(x => x.ID == organizationID);
+            var toBeSofDeletedOrganization = await _context.Organizations.Include(x=> x.Monitors).SingleOrDefaultAsync(x => x.ID == organizationID);
             if (toBeSofDeletedOrganization is null)
             {
                 return new ApiResponse(ResponseStatus.NotFound, ResponseMessage.NotFoundOrganization);
@@ -79,7 +79,13 @@ namespace UpMo.Services.Concrete
                 return new ApiResponse(ResponseStatus.Forbid, ResponseMessage.Forbid);
             }
 
-            toBeSofDeletedOrganization.DeletedAt = DateTime.Now;
+            var dateTimeNowUtc = DateTime.UtcNow;
+            toBeSofDeletedOrganization.DeletedAt = dateTimeNowUtc;
+            // mark as deleted the related monitors with deleted organization too
+            foreach (var monitor in toBeSofDeletedOrganization.Monitors)
+            {
+                monitor.DeletedAt = dateTimeNowUtc;
+            }
             await _context.SaveChangesAsync();
             return new ApiResponse(ResponseStatus.NoContent);
         }

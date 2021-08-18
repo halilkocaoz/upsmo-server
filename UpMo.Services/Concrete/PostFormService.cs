@@ -4,7 +4,6 @@ using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using UpMo.Common.DTO.Request.Monitor;
 using UpMo.Common.DTO.Response.Monitor;
-using UpMo.Common.Monitor;
 using UpMo.Common.Response;
 using UpMo.Data;
 using UpMo.Data.Extensions;
@@ -92,7 +91,7 @@ namespace UpMo.Services.Concrete
                 return new ApiResponse(ResponseStatus.Forbid, ResponseMessage.Forbid);
             }
             
-            toBeSoftDeletedPostForm.DeletedAt = DateTime.Now;
+            toBeSoftDeletedPostForm.DeletedAt = DateTime.UtcNow;
             await _context.SaveChangesAsync();
             return new ApiResponse(ResponseStatus.NoContent);
         }

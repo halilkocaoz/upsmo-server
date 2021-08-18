@@ -96,7 +96,7 @@ namespace UpMo.Services.Concrete
                 return new ApiResponse(ResponseStatus.Forbid, ResponseMessage.Forbid);
             }
 
-            toBeSoftDeletedManager.DeletedAt = DateTime.Now;
+            toBeSoftDeletedManager.DeletedAt = DateTime.UtcNow;
             await _context.SaveChangesAsync();
             return new ApiResponse(ResponseStatus.NoContent);
         }

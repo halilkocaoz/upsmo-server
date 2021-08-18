@@ -86,7 +86,7 @@ namespace UpMo.Services.Concrete
                 return new ApiResponse(ResponseStatus.Forbid, ResponseMessage.Forbid);
             }
 
-            toBeSoftDeletedHeader.DeletedAt = DateTime.Now;
+            toBeSoftDeletedHeader.DeletedAt = DateTime.UtcNow;
             await _context.SaveChangesAsync();
             return new ApiResponse(ResponseStatus.NoContent);
         }
