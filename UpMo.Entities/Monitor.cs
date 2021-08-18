@@ -17,16 +17,11 @@ namespace UpMo.Entities
         /// Domain or IP Address
         /// </summary>
         public string Host { get; set; }
-        /// <summary>
-        /// streaming topic name
-        /// </summary>
         public string Region { get; set; }
         /// <summary>
         /// request method
         /// </summary>
         public string Method { get; set; }
-        public string BasicAuthUser { get; set; }
-        public string BasicAuthPassword { get; set; }
         public int IntervalMs { get; set; } = 1000 * 60;
         public int TimeoutMs { get; set; } = 1000 * 10;
 

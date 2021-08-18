@@ -9,16 +9,15 @@ namespace UpMo.Common.DTO.Request.Monitor
         [Required]
         public string Name { get; set; }
 
-        public string BasicAuthUser { get; set; }
-        public string BasicAuthPassword { get; set; }
-
         //todo regex
         [Required]
         public string Host { get; set; }
-
+        
+        [Required]
         [Range((int)MonitorMethodType.GET, (int)MonitorMethodType.POST)]
         public MonitorMethodType Method { get; set; }
 
+        [Required]
         [Range((int)MonitorRegion.TR_Istanbul, (int)MonitorRegion.EU_Berlin)]
         public MonitorRegion Region { get; set; }
     }

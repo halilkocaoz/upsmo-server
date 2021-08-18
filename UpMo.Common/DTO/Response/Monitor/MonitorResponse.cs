@@ -10,12 +10,9 @@ namespace UpMo.Common.DTO.Response.Monitor
         public string Host { get; set; }
         public string Method { get; set; }
         public string Region { get; set; }
-        public string BasicAuthUser { get; set; }
-        public string BasicAuthPassword { get; set; }
         public int IntervalMs { get; set; }
 
         public List<PostFormResponse> PostForms { get; set; }
         public List<HeaderResponse> Headers { get; set; }
-
     }
 }
