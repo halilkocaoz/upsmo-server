@@ -18,6 +18,6 @@ jobs:
       with:
         dotnet-version: 5.0.x
     - name: Restore dependencies
-      run: dotnet restore ./UpMo.WebAPI/UpMo.WebAPI.csproj
+      run: dotnet restore ./UpsMo.WebAPI/UpsMo.WebAPI.csproj
     - name: Build
-      run: dotnet build --configuration Release ./UpMo.WebAPI/UpMo.WebAPI.csproj
+      run: dotnet build --configuration Release ./UpsMo.WebAPI/UpsMo.WebAPI.csproj

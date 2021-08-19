@@ -1,12 +1,12 @@
 mig:
-	cd ./UpMo.Data && dotnet ef --startup-project ../UpMo.WebAPI/ migrations add $(name) && cd ..
+	cd ./UpsMo.Data && dotnet ef --startup-project ../UpsMo.WebAPI/ migrations add $(name) && cd ..
 migrm:
-	cd ./UpMo.Data && dotnet ef migrations remove --startup-project ../UpMo.WebAPI/ && cd ..
+	cd ./UpsMo.Data && dotnet ef migrations remove --startup-project ../UpsMo.WebAPI/ && cd ..
 dbup:
-	cd ./UpMo.Data && dotnet ef --startup-project ../UpMo.WebAPI/ database update && cd .. && make wr
+	cd ./UpsMo.Data && dotnet ef --startup-project ../UpsMo.WebAPI/ database update && cd .. && make wr
 r:
-	cd ./UpMo.WebAPI/ && dotnet run && cd ..
+	cd ./UpsMo.WebAPI/ && dotnet run && cd ..
 wr:
-	cd ./UpMo.WebAPI/ && dotnet watch run && cd ..
+	cd ./UpsMo.WebAPI/ && dotnet watch run && cd ..
 res:
-	cd ./UpMo.WebAPI/ && dotnet restore && cd ..
+	cd ./UpsMo.WebAPI/ && dotnet restore && cd ..
