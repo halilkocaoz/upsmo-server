@@ -1,0 +1,21 @@
+version: '3.3'
+
+services:
+  postgres:
+    container_name: postgres-docker
+    image: postgres:alpine
+    restart: always
+    environment:
+      - POSTGRES_DB=UpsMo
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+    ports:
+      - 15432:5432
+    volumes:
+      - $HOME/docker/volumes/app-postgres:/var/lib/postgresql/data
+  upsmo-web:
+    build: .
+    container_name: upsmo-web
+    restart: always
+    ports:
+      - "80:80"

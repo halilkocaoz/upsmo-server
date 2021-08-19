@@ -27,7 +27,7 @@ namespace UpsMo.WebAPI
             {
                 options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
             });
-            
+
             services.AddDbContext<UpsMoContext>(options =>
             {
                 options.UseNpgsql(Configuration.GetConnectionString("Postgres-UpsMo-Application"));
@@ -41,12 +41,9 @@ namespace UpsMo.WebAPI
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "UpsMo.WebAPI v1"));
-            }
+            app.UseDeveloperExceptionPage();
+            app.UseSwagger();
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "UpsMo.WebAPI v1"));
 
             app.UseHttpsRedirection();
 
