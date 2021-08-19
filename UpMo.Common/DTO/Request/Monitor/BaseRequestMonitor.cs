@@ -9,8 +9,8 @@ namespace UpMo.Common.DTO.Request.Monitor
         [Required]
         public string Name { get; set; }
 
-        //todo regex
         [Required]
+        [RegularExpression(@"https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)")]
         public string Host { get; set; }
         
         [Required]
@@ -18,7 +18,7 @@ namespace UpMo.Common.DTO.Request.Monitor
         public MonitorMethodType Method { get; set; }
 
         [Required]
-        [Range((int)MonitorRegion.TR_Istanbul, (int)MonitorRegion.EU_Berlin)]
+        [Range((int)MonitorRegion.TR_Istanbul, (int)MonitorRegion.DE_Frankfurt)]
         public MonitorRegion Region { get; set; }
     }
 }
