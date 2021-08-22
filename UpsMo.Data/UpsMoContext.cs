@@ -10,10 +10,11 @@ namespace UpsMo.Data
 
         public DbSet<Organization> Organizations { get; set; }
         public DbSet<Manager> Managers { get; set; }
-        
+
         public DbSet<Monitor> Monitors { get; set; }
         public DbSet<Header> Headers { get; set; }
         public DbSet<PostForm> PostForms { get; set; }
+        public DbSet<Response> Responses { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -50,11 +51,11 @@ namespace UpsMo.Data
                 .WithMany(organization => organization.Monitors)
                 .HasForeignKey(monitor => monitor.OrganizationID);
             });
-            
+
             modelBuilder.Entity<Header>(entity =>
             {
                 entity.HasQueryFilter(x => !x.DeletedAt.HasValue);
-                
+
                 entity.HasOne(x => x.Monitor)
                 .WithMany(monitor => monitor.Headers)
                 .HasForeignKey(x => x.MonitorID);
@@ -69,6 +70,11 @@ namespace UpsMo.Data
                 .HasForeignKey(x => x.MonitorID);
             });
 
+            modelBuilder.Entity<Response>(entity =>
+            {
+                entity.Property(x => x.ID).ValueGeneratedOnAdd();
+                entity.HasOne<Monitor>().WithMany().HasForeignKey(response => response.MonitorID);
+            });
             base.OnModelCreating(modelBuilder);
         }
     }
