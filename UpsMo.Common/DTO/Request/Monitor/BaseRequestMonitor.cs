@@ -16,9 +16,5 @@ namespace UpsMo.Common.DTO.Request.Monitor
         [Required]
         [Range((int)MonitorMethodType.GET, (int)MonitorMethodType.POST)]
         public MonitorMethodType Method { get; set; }
-
-        [Required]
-        [Range((int)MonitorRegion.TR_Istanbul, (int)MonitorRegion.DE_Frankfurt)]
-        public MonitorRegion Region { get; set; }
     }
 }

@@ -41,11 +41,7 @@ namespace UpsMo.WebAPI
             CreateMap<MonitorUpdateRequest, Monitor>().ForMember(monitor => monitor.PostForms, opts =>
             {
                 opts.Condition(monitorUpdateRequest => monitorUpdateRequest.Method == MonitorMethodType.POST);
-            }).ForMember(monitor => monitor.Region, opts =>
-            {
-                opts.MapFrom(monitorUpdateRequest => Enum.GetName(monitorUpdateRequest.Region));
-            })
-            .ForMember(monitor => monitor.Method, opts =>
+            }).ForMember(monitor => monitor.Method, opts =>
             {
                 opts.MapFrom(monitorUpdateRequest => Enum.GetName(monitorUpdateRequest.Method));
             });
