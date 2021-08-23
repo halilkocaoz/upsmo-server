@@ -24,8 +24,9 @@ OR
 * `cd upsmo-server/UpsMo.WebAPI && dotnet restore && dotnet run`
 
 ## Related repositories
-
 * [upsmo-checker](https://github.com/halilkocaoz/upsmo-checker)
+* [upsmo-notifier](https://github.com/halilkocaoz/upsmo-notifier)
+* [upsmo-response-inserter](https://github.com/halilkocaoz/upsmo-response-inserter)
 
 ## Status
 
