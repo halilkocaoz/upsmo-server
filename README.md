@@ -17,8 +17,8 @@ OR
 
 ## Related repositories
 * [upsmo-checker](https://github.com/halilkocaoz/upsmo-checker)
+* [upsmo-inserter](https://github.com/halilkocaoz/upsmo-inserter)
 * [upsmo-notifier](https://github.com/halilkocaoz/upsmo-notifier)
-* [upsmo-response-inserter](https://github.com/halilkocaoz/upsmo-response-inserter)
 
 ## Status
 
