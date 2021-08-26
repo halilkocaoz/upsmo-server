@@ -73,7 +73,6 @@ namespace UpsMo.Data
             modelBuilder.Entity<Response>(entity =>
             {
                 entity.Property(x => x.ID).ValueGeneratedOnAdd();
-                entity.HasOne<Monitor>().WithMany().HasForeignKey(response => response.MonitorID);
             });
             base.OnModelCreating(modelBuilder);
         }
