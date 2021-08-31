@@ -98,7 +98,7 @@ namespace UpsMo.Services.Concrete
                                                     .Include(x => x.Monitors).ThenInclude(x => x.Headers)
                                                     .AsSplitQuery().Where(x =>
                                                                    x.FounderUserID == authenticatedUserID
-                                                                || x.Managers.Any(x => x.Viewer
+                                                                || x.Managers.Any(x => (x.Viewer || x.Admin)
                                                                 && x.UserID == authenticatedUserID))
                                                     .ToListAsync();
 
