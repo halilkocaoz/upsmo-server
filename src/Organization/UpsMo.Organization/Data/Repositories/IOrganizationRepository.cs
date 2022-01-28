@@ -21,9 +21,20 @@ namespace UpsMo.Organization.Data.Repositories
             await _context.Organizations.AddAsync(organization);
         }
 
-        public Task<List<Models.Organization>> GetAllWithManagersByUserIDAsync(int userID)
+        public async Task<List<Models.Organization>> GetAllWithManagersByUserIDAsync(int userID)
         {
-            throw new NotImplementedException();
+            if (userID <= 0)
+            {
+                return new List<Models.Organization>();
+            }
+
+            return await _context.Organizations.AsSplitQuery()
+                .Where(o =>
+                    o.FounderUserID == userID
+                    ||
+                    o.Managers.Any(m => m.UserID == userID && (m.Viewer || m.Admin)))
+                .Include(o => o.Managers.Where(m => m.Admin && m.UserID == userID))
+                .ToListAsync();
         }
 
         public async Task<Models.Organization> GetByIDAsync(Guid organizationID)
